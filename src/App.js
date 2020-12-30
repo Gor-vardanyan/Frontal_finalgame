@@ -13,7 +13,7 @@ function App() {
   return (
     <BrowserRouter>
       <Route>
-        {user?<Header></Header>:<div></div>}
+        {user?<Header setUser={setUser}></Header>:<div></div>}
         <Switch>
           <Route path='/' exact >
             {user
