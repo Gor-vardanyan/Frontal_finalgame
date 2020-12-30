@@ -6,23 +6,23 @@ const Login =({ setUser })=>{
     const history = useHistory();
 
     const handleSubmit = event =>{
-        event.preventdefault();
-        const user = {
-            nickname: event.target.email.value,
+        event.preventDefault();
+        const loguser = {
+            nickname: event.target.nickname.value,
             password: event.target.password.value
         };
-        console.log(user)
-        axios.post('https://(server)/user/login', user)
-        .then(res => {
-            setUser(res.data) //seteo el user como estado del App.js
-            localStorage.setItem('authToken', res.data.token);
-            localStorage.setItem('user', JSON.stringify(res.data))
-            alert({ message: 'Welcome', description: user.email })
-            setTimeout(() => {
-                history.push('/')
-            }, 500);
-        })
-        .catch(error => { console.log(error); })
+        console.log(loguser)
+         axios.post('https://finalgamedb.herokuapp.com/login', loguser)
+         .then(res => {
+             setUser(res.data) //seteo el user como estado del App.js
+             localStorage.setItem('authToken', res.data.user.token);
+             localStorage.setItem('user', JSON.stringify(res.data.user))
+             alert({ message: 'Welcome', description: loguser.nickname })
+             setTimeout(() => {
+                 history.push('/')
+             }, 500);
+         })
+         .catch(error => { console.log(error); })
     };
 
    
@@ -39,7 +39,7 @@ const Login =({ setUser })=>{
                     <form className="form" onSubmit={handleSubmit} >
                         <input name="nickname" required placeholder="NICKNAME" />
                         <input name="password" type="password" required placeholder="PASSWORD" />
-                        <input className="button"  type="submit" value="Login" />
+                        <input className="button"  type="submit" value="Submit" />
                     </form>
                     <button className="button">Register</button>
             </div>
