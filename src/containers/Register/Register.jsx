@@ -1,12 +1,9 @@
-import React,{useState} from 'react' 
+import React from 'react' 
 import './Register.css'
-import { useHistory } from 'react-router-dom'
 import axios from 'axios';
 
-const Register = ({setReg, setUser}) => {
-    const [newUser, setNewUser] = useState({});
+const Register = ({setReg}) => {
 
-    const history = useHistory({});
     const back=()=>{setReg(false)}
 
     const handleSubmit = event => {
@@ -17,7 +14,6 @@ const Register = ({setReg, setUser}) => {
             password: event.target.password.value,
         })
         .then(res => {
-            setNewUser(res.data.user);
             alert('Account created succesfully')
             setTimeout(() => { 
                 setReg(false)               

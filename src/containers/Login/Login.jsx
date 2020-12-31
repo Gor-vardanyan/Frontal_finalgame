@@ -23,7 +23,7 @@ const Login =({ setUser })=>{
          .then(res => {
              setUser(res.data) //seteo el user como estado del App.js
              localStorage.setItem('authToken', res.data.user.token);
-             localStorage.setItem('user', JSON.stringify(res.data.user))
+             localStorage.setItem('user', JSON.stringify(res.data.user.nickname))
              alert("Welcome back" )
              setTimeout(() => {
                  history.push('/')
