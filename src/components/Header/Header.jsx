@@ -14,7 +14,8 @@ const Header = ({setUser}) => {
 
     const clicklogout=()=>{
         setUser(null)
-        localStorage.clear();
+        localStorage.clear();        
+        history.push('/');
     }
 
     const clickgame=()=>{
