@@ -26,13 +26,13 @@ const Register = ({setReg, setUser}) => {
         .catch(error => { alert("user already exists"); console.log(process.env); })
     };
 
-    return (<div className="login">
+    return (<div className="login2">
                 <h3 className="userlog">USER Register</h3>
                 <form className="centered" onSubmit={handleSubmit} >
                     <input name="nickname" required placeholder="Nickname"/>
                     <input name="email" required placeholder="Email"/>
                     <input name="password" type="password" required placeholder="Password"/>
-                    <input type="submit" value="Register" />
+                    <input className="button" type="submit" value="Register" />
                 </form>
                 <button className="button" onClick={back}>back</button>
             </div>
