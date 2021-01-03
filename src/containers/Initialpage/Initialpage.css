@@ -9,7 +9,7 @@
 .contenedor{
     display: flex;
     justify-content: center;
-    height: 60vh;
+    height: 50vh;
     width: 100vw;
 }
 .homeimage{
@@ -53,4 +53,11 @@
     cursor: pointer;
     border: solid 3px red;
     
+}
+.player_info{
+    padding: 1.5em;
+}
+.pose{
+    display: flex;
+    flex-direction: column;
 }
