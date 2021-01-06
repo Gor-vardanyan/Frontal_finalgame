@@ -1,0 +1,18 @@
+.fighter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+    width: 100vw;
+}
+.stadium{
+    width: 70vw;
+    height: 50vh;
+    background-color: blue;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+.flip{
+    transform: scaleX(-1);
+}

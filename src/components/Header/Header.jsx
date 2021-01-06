@@ -1,10 +1,7 @@
 import React, {useState}from 'react'
 import { useHistory } from 'react-router-dom'
 import './Header.css'
-import logo from'../../images/1712205-middle.png'
-import fighters from'../../images/fighterswhite.png'
-import profile from'../../images/profilewhite.png'
-import logOut from'../../images/logoutwhite.png'
+
 
 
 
@@ -32,11 +29,11 @@ const Header = ({setUser}) => {
     }
     return(
      <div className="header" >
-        <div className="cont"><img onClick={clickgame} className="logo" src={logo} alt=""/></div> 
-         <div className="cont"><img onClick={clickfighters} className="logo" src={fighters} alt=""/></div>
+        <div className="cont"><img onClick={clickgame} className="logo" src={'Images/fightlogo.png'} alt=""/></div> 
+         <div className="cont"><img onClick={clickfighters} className="logo" src={'Images/fighterswhite.png'} alt=""/></div>
          {logout
-         ?<div className="cont"><img onClick={clicklogout} className="logo" src={logOut} alt=""/></div>
-         :<div className="cont"><img onClick={clickprofile} className="logo" src={profile} alt=""/></div>
+         ?<div className="cont"><img onClick={clicklogout} className="logo" src={'Images/profilewhite.png'} alt=""/></div>
+         :<div className="cont"><img onClick={clickprofile} className="logo" src={'Images/logoutwhite.png'} alt=""/></div>
          }
      </div>   
     )
