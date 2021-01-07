@@ -31,7 +31,8 @@ const Fight =()=>{
          console.log(pos_player2)
 
          return ( calc > -10 && calc < 10)
-     }
+     };
+
     const Update = useUpdate();
     window.onkeyup=('keyup',(e)=>{
             switch (e.key){
@@ -42,9 +43,11 @@ const Fight =()=>{
                     
                 break;   
                 case 'd':
-                    player_1.move_right();
-                    setRenderState(player_1.renderPlayer());
-                    Update();
+                    if(!checkRange(player_1.getPositionPercentage(),player_2.getPositionPercentage())){  
+                        player_1.move_right();
+                        setRenderState(player_1.renderPlayer());
+                        Update();
+                    }
 
                 break;
                 case 'f':
@@ -53,7 +56,8 @@ const Fight =()=>{
                         player_1.isAtacking(true);
                     }
                     if(checkRange(player_1.getPositionPercentage(),player_2.getPositionPercentage())){
-                        setLifePlayer2(player_2.get_dmg(player_1.strength));
+                        player_2.get_dmg(player_1.strength);
+                        setLifePlayer2(player_2.renderLife())
                         Update();
                     };
                     setAtackOn1(false);
@@ -67,9 +71,11 @@ const Fight =()=>{
 
                 break;
                 case 'j':
-                    player_2.move_right();
-                    setRenderState2(player_2.renderPlayer());
-                    Update();
+                    if(!checkRange(player_1.getPositionPercentage(),player_2.getPositionPercentage())){
+                        player_2.move_right();
+                        setRenderState2(player_2.renderPlayer());
+                        Update();
+                    }
 
                 break;
                 case 'l':
@@ -84,7 +90,8 @@ const Fight =()=>{
                         player_2.isAtacking(true);
                     }
                     if(checkRange(player_1.getPositionPercentage(),player_2.getPositionPercentage())){
-                        setLifePlayer1(player_1.get_dmg(player_2.strength));
+                        player_1.get_dmg(player_2.strength);
+                        setLifePlayer1(player_1.renderLife())
                         Update();
                     };
                     setAtackOn2(false);
@@ -107,15 +114,15 @@ const Fight =()=>{
                 <div className="fighter">
                     <div className="life">
                        {player_1
-                       ?<div>
-                           {lifePlayer1}
+                       ?<div className="lifespawn">
+                           {player_1.name}{lifePlayer1}
                        </div>
                        :<div></div>
                        } 
                         <img className="vs" src="/images/vs.png" alt=""/>
                         {player_2
-                       ?<div>
-                           {lifePlayer2}
+                       ?<div className="lifespawn">
+                           {player_2.name}{lifePlayer2}
                        </div>
                        :<div></div>
                        } 

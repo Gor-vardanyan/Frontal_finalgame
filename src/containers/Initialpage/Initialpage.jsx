@@ -58,14 +58,16 @@ const Initialpage =({dispatch})=>{
             return this.health;
         };
         getHealthPercentage(){
-            return (this.health*this.max_health)/100;
+            let porcentaje1 = this.max_health/2;
+            let porcentaje2 =this.health/2;
+            return (porcentaje2*porcentaje1)/100;
         };
         getPositionPercentage(){
            return (this.position_x*100)/this.boundries.max;
         };
         get_dmg(num){
             this.health -= num;
-            if((this.health*this.max_health)/100 === 0 || (this.health*this.max_health)/100  <= 0 ){ 
+            if((this.health*this.max_health)/100 === 0 || (this.max_health-this.health) <= 0 ){ 
                 console.log("endgame")
                this.playON();
             };
@@ -125,13 +127,13 @@ const Initialpage =({dispatch})=>{
         renderLife(){
            let actual_health = this.getHealthPercentage();
            console.log("actual health "+actual_health)
-           let styleish ={
+           let styleish = {
                 width: `${actual_health}%`,
                 height: "5vh",
                 backgroundColor: "#4CAF50",
                 border: "solid 2px"
             }
-            return (<div style={styleish}></div>);
+            return (<div style={styleish}>{this.health}</div>);
         };
     }; 
     
@@ -164,7 +166,6 @@ const Initialpage =({dispatch})=>{
             case 2: 
                 second = new player(item);
                 dispatch({ type: "player_2", player_1, payload: second });
-
                 setPlayer_2(second);
                 setPlayer_2_info(renderStats(item));
 

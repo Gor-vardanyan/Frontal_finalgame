@@ -35,3 +35,10 @@
     transform: scaleX(-1);
     position: absolute;
 }
+.lifespawn{
+    width: 35vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    color: white;
+}
