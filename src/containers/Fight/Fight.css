@@ -1,9 +1,20 @@
 .fighter{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 75vh;
     width: 100vw;
+}
+.life{
+    width: 70vw;
+    display: flex;
+    justify-content: center;
+}
+.vs{
+    position: absolute;
+    height: 10vh;
+    margin-top: -3vh;
 }
 .stadium{
     width: 70vw;
@@ -13,6 +24,14 @@
     justify-content: center;
     align-items: flex-end;
 }
+.noflip{
+    width: 70vw;
+    height: 50vh;
+    position: absolute;
+}
 .flip{
+    width: 70vw;
+    height: 50vh;
     transform: scaleX(-1);
+    position: absolute;
 }
