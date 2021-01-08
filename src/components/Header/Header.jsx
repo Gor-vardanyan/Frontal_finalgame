@@ -32,8 +32,8 @@ const Header = ({setUser}) => {
         <div className="cont"><img onClick={clickgame} className="logo" src={'Images/fightlogo.png'} alt=""/></div> 
          <div className="cont"><img onClick={clickfighters} className="logo" src={'Images/fighterswhite.png'} alt=""/></div>
          {logout
-         ?<div className="cont"><img onClick={clicklogout} className="logo" src={'Images/profilewhite.png'} alt=""/></div>
-         :<div className="cont"><img onClick={clickprofile} className="logo" src={'Images/logoutwhite.png'} alt=""/></div>
+         ?<div className="cont"><img onClick={clicklogout} className="logo" src={'Images/logoutwhite.png'} alt=""/></div>
+         :<div className="cont"><img onClick={clickprofile} className="logo" src={'Images/profilewhite.png'} alt=""/></div>
          }
      </div>   
     )

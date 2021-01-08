@@ -4,7 +4,10 @@ import axios from 'axios';
 import Fight from '../Fight/Fight';
 import { connect } from 'react-redux';
 
-
+const useUpdate = () => {
+    const set = useState(0)[1];
+    return () => set((s) => s + 1);
+};
 
 const Initialpage =({dispatch})=>{
     var first = {};
@@ -17,6 +20,7 @@ const Initialpage =({dispatch})=>{
     const [playerfixed,setPlayerfixed]=useState(1);
     const [value]=useState(3);
     const [fight,setFight]=useState(false);
+    const Update = useUpdate();
 
     useEffect(() => {
         let token = localStorage.getItem("authToken");
@@ -42,17 +46,21 @@ const Initialpage =({dispatch})=>{
             this.punch = '/images/Figheters/'+item.name+'/Fight/punch.png';
             this.max_health = item.health;
             this.health = item.health;
+            this.jumpL ='/images/Figheters/'+item.name+'/Fight/back.gif';
+            this.jumpR ='/images/Figheters/'+item.name+'/Fight/jump.gif';
             this.is_atacking = false;
             this.mana = item.mana;
             this.strength = item.strength;
             this.power = item.power;
             this.playerfixed = 1;
+            this.flip = false;
             this.position_x = 15;
             this.boundries = {
                 min: 0,
                 max: 65
             };
             this.position_y = 0;
+            this.fight = true
         };
         getCurrentHealth(){
             return this.health;
@@ -69,18 +77,75 @@ const Initialpage =({dispatch})=>{
             this.health -= num;
             if((this.health*this.max_health)/100 === 0 || (this.max_health-this.health) <= 0 ){ 
                 console.log("endgame")
-               this.playON();
+                this.fight = false
             };
         };
         move_right(){
-            if(this.position_x < this.boundries.max){
-                this.position_x += 5;
-            };
+            let calc = (this.position_x - this.boundries.max)
+
+            if(calc < -5){
+
+                    this.position_x+=5 ;
+                    Update();
+                
+           }else{
+               for (let i = calc; i <= 0; i++) {
+                   console.log(i)
+                   this.position_x ++ ;
+                   Update();
+               }
+            }
         };
-        move_left(){
-            if(this.position_x > this.boundries.min){
-                this.position_x -= 5;                
+        jumpRight(){
+            let calc = (this.position_x - this.boundries.max)
+            console.log("jumpR")
+            if(calc < -11){
+                for (let i = 0; i < 15; i++) {
+                    this.position_x++ ;
+                    Update();
+                };
+                return(this.renderPlayer("e"))
+           }else{
+               for (let i = calc; i <= 0; i++) {
+                   this.position_x ++ ;
+                   Update();
+                }
+                return(this.renderPlayer("e"))
+            }
             };
+        
+        jumpLeft(){
+            let calc = (this.position_x - this.boundries.min)
+            console.log("jumpL")
+            if(calc > 11 ){
+
+                for (let i = 0; i < 15; i++) {
+                     this.position_x-- ;
+                     Update();                     
+                    };
+                    return (this.renderPlayer("q"))
+            }else{
+                for (let i = 0; i < calc; i++) {
+                    this.position_x -- ;
+                    Update();
+                }
+                return (this.renderPlayer("q"))
+            } 
+        }
+        move_left(){
+            let calc = (this.position_x - this.boundries.min)
+
+            if(calc > 5){
+                    this.position_x -=5;
+                    Update();
+                
+           }else{
+               for (let i = 0; i < calc; i++) {
+                   console.log(i)
+                   this.position_x -- ;
+                   Update();
+               }
+            }
         };
         move_up(){
         return console.log("a")
@@ -100,33 +165,56 @@ const Initialpage =({dispatch})=>{
                 styleish = {
                     position: "absolute",
                     left: `${pos}vw`, 
-                    bottom: "0vh",
+                    bottom: "7.5vh",
                     boxShadow: "0px, 16px, 20px, -20px",
                 };
-            if(f==="f" && !this.is_atacking){              
+            if(f==="f" && !this.is_atacking){     
+                if(this.flip ===true){
+                    pos = (this.position_x- 2);
+                    styleish = {
+                       position: "absolute",
+                       left: `${pos}vw`, 
+                       bottom: "7.5vh",
+                       transform: "rotateY(180deg)"
+                    }
+                }         
                 console.log("update")
                 return (<div style={styleish} >
                     <img className="charactersize" src={this.punch} alt=""/>
                     </div>);
+            }else if(f==="e"){              
+                console.log("jump")
+                return (<div style={styleish} >
+                    <img className="charactersize" src={this.jumpR} alt=""/>
+                    </div>);
+            }else if(f==="q"){     
+                pos = (this.position_x- 15);
+                styleish = {
+                    position: "absolute",
+                    left: `${pos}vw`, 
+                    bottom: "7.5vh",
+                };         
+                console.log("jump")
+                return (<div style={styleish} >
+                    <img className="charactersize" src={this.jumpL} alt=""/>
+                    </div>);
             }else{
+                if(this.flip ===true){
+                    styleish = {
+                       position: "absolute",
+                       left: `${pos}vw`, 
+                       bottom: "7.5vh",
+                       transform: "rotateY(180deg)"
+                    }
+                }
                 return (<div style={styleish} >
                         <img className="charactersize" src={this.img} alt=""/>
                         </div>);
             };   
         };
-    
-        playON(){
-            let winner = "";
-            if(this.health > 0){
-                winner = this.name+" is the winner" ;
-                console.log(winner);
-            };
-        return(<div>{winner}</div>);
-        };
 
         renderLife(){
            let actual_health = this.getHealthPercentage();
-           console.log("actual health "+actual_health)
            let styleish = {
                 width: `${actual_health}%`,
                 height: "5vh",

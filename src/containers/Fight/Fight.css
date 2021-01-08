@@ -13,8 +13,9 @@
 }
 .vs{
     position: absolute;
-    height: 10vh;
-    margin-top: -3vh;
+    height: 13vh;
+    margin-top: -4vh;
+    transform: rotate(-18deg);
 }
 .stadium{
     width: 70vw;
@@ -23,6 +24,17 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
+}
+.imgstadium{
+    width: 70vw;
+    height: 50vh;
+    
+}
+.imgteclado{
+    display: flex;
+    align-self: flex-start;
+    margin-left: 14vw;
+    height: 16vh;
 }
 .noflip{
     width: 70vw;
