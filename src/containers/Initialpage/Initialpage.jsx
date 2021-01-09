@@ -44,30 +44,37 @@ const Initialpage =({dispatch})=>{
             this.value = item.value;
             this.img = '/images/Figheters/'+item.name+'/Pose/'+item.name+'.gif';
             this.punch = '/images/Figheters/'+item.name+'/Fight/punch.png';
+            this.guard = '/images/Figheters/'+item.name+'/Fight/guard.png';
+            this.jump1 ='/images/Figheters/'+item.name+'/jump/jump.png';
+            this.jump2 ='/images/Figheters/'+item.name+'/jump/jump2.png';
+            this.jump3 ='/images/Figheters/'+item.name+'/jump/jump3.png';
+            this.jump4 ='/images/Figheters/'+item.name+'/jump/jump4.png';
+            this.jump5 ='/images/Figheters/'+item.name+'/jump/jump5.png';
             this.max_health = item.health;
             this.health = item.health;
-            this.jumpL ='/images/Figheters/'+item.name+'/Fight/back.gif';
-            this.jumpR ='/images/Figheters/'+item.name+'/Fight/jump.gif';
-            this.is_atacking = false;
+            this.max_mana = item.mana;
             this.mana = item.mana;
             this.strength = item.strength;
             this.power = item.power;
             this.playerfixed = 1;
+            this.is_atacking = false;
             this.flip = false;
+            this.fight = true;
             this.position_x = 15;
+            this.position_y = 0;
             this.boundries = {
                 min: 0,
                 max: 65
             };
-            this.position_y = 0;
-            this.fight = true
-        };
-        getCurrentHealth(){
-            return this.health;
         };
         getHealthPercentage(){
             let porcentaje1 = this.max_health/2;
             let porcentaje2 =this.health/2;
+            return (porcentaje2*porcentaje1)/100;
+        };
+        getManaPercentage(){
+            let porcentaje1 = this.max_mana/2;
+            let porcentaje2 =this.mana/2;
             return (porcentaje2*porcentaje1)/100;
         };
         getPositionPercentage(){
@@ -82,12 +89,9 @@ const Initialpage =({dispatch})=>{
         };
         move_right(){
             let calc = (this.position_x - this.boundries.max)
-
             if(calc < -5){
-
                     this.position_x+=5 ;
-                    Update();
-                
+                    Update();  
            }else{
                for (let i = calc; i <= 0; i++) {
                    console.log(i)
@@ -96,49 +100,11 @@ const Initialpage =({dispatch})=>{
                }
             }
         };
-        jumpRight(){
-            let calc = (this.position_x - this.boundries.max)
-            console.log("jumpR")
-            if(calc < -11){
-                for (let i = 0; i < 15; i++) {
-                    this.position_x++ ;
-                    Update();
-                };
-                return(this.renderPlayer("e"))
-           }else{
-               for (let i = calc; i <= 0; i++) {
-                   this.position_x ++ ;
-                   Update();
-                }
-                return(this.renderPlayer("e"))
-            }
-            };
-        
-        jumpLeft(){
-            let calc = (this.position_x - this.boundries.min)
-            console.log("jumpL")
-            if(calc > 11 ){
-
-                for (let i = 0; i < 15; i++) {
-                     this.position_x-- ;
-                     Update();                     
-                    };
-                    return (this.renderPlayer("q"))
-            }else{
-                for (let i = 0; i < calc; i++) {
-                    this.position_x -- ;
-                    Update();
-                }
-                return (this.renderPlayer("q"))
-            } 
-        }
         move_left(){
             let calc = (this.position_x - this.boundries.min)
-
             if(calc > 5){
                     this.position_x -=5;
                     Update();
-                
            }else{
                for (let i = 0; i < calc; i++) {
                    console.log(i)
@@ -147,19 +113,22 @@ const Initialpage =({dispatch})=>{
                }
             }
         };
-        move_up(){
-        return console.log("a")
-        };
-
-        move_bottom(){
-        };
-
         isAtacking(status){
             this.is_atacking = status; 
             return this.is_atacking;
         };
+        render(jump,posit,process){
+            let styleish = {
+                position: "absolute",
+                left: `${posit}vw`, 
+                bottom: `${jump}vh`,
+            };
+            return(<div style={styleish} >
+                <img className="charactersize" src={process} alt=""/>
+                </div>);
+        };
 
-        renderPlayer(f){
+        renderPlayer(key){
             let styleish={};
             let pos = this.position_x;
                 styleish = {
@@ -168,7 +137,7 @@ const Initialpage =({dispatch})=>{
                     bottom: "7.5vh",
                     boxShadow: "0px, 16px, 20px, -20px",
                 };
-            if(f==="f" && !this.is_atacking){     
+            if(key==="f" && !this.is_atacking){     
                 if(this.flip ===true){
                     pos = (this.position_x- 2);
                     styleish = {
@@ -181,22 +150,6 @@ const Initialpage =({dispatch})=>{
                 console.log("update")
                 return (<div style={styleish} >
                     <img className="charactersize" src={this.punch} alt=""/>
-                    </div>);
-            }else if(f==="e"){              
-                console.log("jump")
-                return (<div style={styleish} >
-                    <img className="charactersize" src={this.jumpR} alt=""/>
-                    </div>);
-            }else if(f==="q"){     
-                pos = (this.position_x- 15);
-                styleish = {
-                    position: "absolute",
-                    left: `${pos}vw`, 
-                    bottom: "7.5vh",
-                };         
-                console.log("jump")
-                return (<div style={styleish} >
-                    <img className="charactersize" src={this.jumpL} alt=""/>
                     </div>);
             }else{
                 if(this.flip ===true){
@@ -223,7 +176,19 @@ const Initialpage =({dispatch})=>{
             }
             return (<div style={styleish}>{this.health}</div>);
         };
+        renderMana(){
+            let actual_mana = this.getManaPercentage();
+            let styleish = {
+                 width: `${actual_mana}%`,
+                 height: "5vh",
+                 backgroundColor: "blue",
+                 border: "solid 2px"
+             }
+             return (<div style={styleish}>{this.mana}</div>);
+        }
+
     }; 
+    
     
     const renderStats=( item,clase = false)=>{
         return(<div>

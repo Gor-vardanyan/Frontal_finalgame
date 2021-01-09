@@ -19,14 +19,25 @@ const useUpdate = () => {
 const Fight =()=>{
     const [renderState,setRenderState]=useState(player_1.renderPlayer());
     const [renderState2,setRenderState2]=useState(player_2.renderPlayer());
-    const [lifePlayer1,setLifePlayer1]=useState(player_1.renderLife())
-    const [lifePlayer2,setLifePlayer2]=useState(player_2.renderLife())
-
-    const [atackOn1,setAtackOn1]=useState(true)
-    const [atackOn2,setAtackOn2]=useState(true)
-
+    const [lifePlayer1,setLifePlayer1]=useState(player_1.renderLife());
+    const [lifePlayer2,setLifePlayer2]=useState(player_2.renderLife());
+    const [manaPlayer1,setManaPlayer1]=useState(player_1.renderMana());
+    const [manaPlayer2,setManaPlayer2]=useState(player_1.renderMana());
+    const [guard1, setGuard1] = useState(false);
+    const [guard2, setGuard2] = useState(false);
+    const [onair,setOnAir]=useState(false);
+    const [atackOn1,setAtackOn1]=useState(true);
+    const [atackOn2,setAtackOn2]=useState(true);
     const [winner, setWinner] = useState(false);
+    
+    const checkRange = (pos_player1, pos_player2) =>{
+        var calc = ((pos_player1 + pos_player2) - 100);
+        console.log("posicion 1"+pos_player1)
+        console.log("posicion 2"+pos_player2)
+        console.log("interacion de pos"+calc)
 
+        return ( calc > -10 && calc < 10)
+    };
     const checkposition=()=>{
     let position =(player_1.getPositionPercentage()+player_2.getPositionPercentage() - 100);
        if(position > 0){
@@ -37,77 +48,172 @@ const Fight =()=>{
         player_1.flip = false;
         player_2.flip = false;
        }
-    }
+    };
+    const jumpR=(item,fun)=>{
+        setOnAir(true)
+    fun(item.render(7.5,item.position_x,item.jump1));
+    console.log("1")
+    setTimeout(()=>{
+        console.log("2")
+        fun(item.render(12,item.position_x,item.jump2));
+        item.move_right()
+        setTimeout(()=>{
+            console.log("3")
+            fun(item.render(22,item.position_x,item.jump3));
+            item.move_right()
+            setTimeout(()=>{
+                console.log("4")
+                fun(item.render(12,item.position_x,item.jump4));
+                item.move_right()
+                setTimeout(()=>{
+                    console.log("5")
+                    fun(item.render(7.5,item.position_x,item.jump1));
+                    setTimeout(()=>{
+                        console.log("6")
+                        fun(item.renderPlayer());
+                        setOnAir(false)
+                    },200)
+                },300)
+            },200)
+        },200)  
+    },100)
 
-     const checkRange = (pos_player1, pos_player2) =>{
-         var calc = ((pos_player1 + pos_player2) - 100);
-         console.log("posicion 1"+pos_player1)
-         console.log("posicion 2"+pos_player2)
-         console.log("interacion de pos"+calc)
+    };
+    const jumpL=(item,fun)=>{
+        setOnAir(true)
+    fun(item.render(7.5,item.position_x,item.jump1));
+    console.log("1")
+    setTimeout(()=>{
+        console.log("2")
+        fun(item.render(12,item.position_x,item.jump2));
+        item.move_left()
+        setTimeout(()=>{
+            console.log("3")
+            fun(item.render(22,item.position_x,item.jump3));
+            item.move_left()
+            setTimeout(()=>{
+                console.log("4")
+                fun(item.render(12,item.position_x,item.jump4));
+                item.move_left()
+                setTimeout(()=>{
+                    console.log("5")
+                    fun(item.render(7.5,item.position_x,item.jump1));
+                    setTimeout(()=>{
+                        console.log("6")
+                        fun(item.renderPlayer());
+                        setOnAir(false)
+                    },200)
+                },300)
+            },200)
+        },200)  
+    },100)
 
-         return ( calc > -10 && calc < 10)
-     };
+  
+
+    };
+    const guard =(item,fun,fun2)=>{
+        fun(item.render(7.5,item.position_x,item.guard));
+        fun2(true);
+    };
+    const letguard =(item,fun,fun2)=>{
+        fun(item.render(7.5,item.position_x,item.img));
+        fun2(false);
+    };
 
     const Update = useUpdate();
+
     window.onkeyup=('keyup',(e)=>{
         let position1 = player_1.getPositionPercentage();
         let position2 = player_2.getPositionPercentage();
-
             switch (e.key){
                 case 'a':
+                    checkposition()
                     if(player_1.flip===true){
                         if(!checkRange(position1,position2)){
                             player_1.move_left()
-                            setRenderState(player_1.renderPlayer());
+                            if(onair===false){
+                                setRenderState(player_1.renderPlayer());
+                            }                            
                             Update();
                         }else{
-                            setRenderState(player_1.renderPlayer());
+                            if(onair===false){
+                                setRenderState(player_1.renderPlayer());
+                            }                            
                             Update();
                         };
                     }else{
                         player_1.move_left()
-                        setRenderState(player_1.renderPlayer());
+                        if(onair===false){
+                            setRenderState(player_1.renderPlayer());
+                        }
                         Update();
                     }
                     
                 break;   
                 case 'd':
+                    checkposition()
                     if(player_1.flip===false){
                         if(!checkRange(position1,position2)){
                             player_1.move_right();
-                            setRenderState(player_1.renderPlayer());
+                            if(onair===false){
+                                setRenderState(player_1.renderPlayer());
+                            }
                             Update();
                         }else{
-                            setRenderState(player_1.renderPlayer());
+                            if(onair===false){
+                                setRenderState(player_1.renderPlayer());
+                            }
                             Update();
                         };
                     }else{
                         player_1.move_right();
-                        setRenderState(player_1.renderPlayer());
+                        if(onair===false){
+                            setRenderState(player_1.renderPlayer());
+                        }
                         Update();
                     }               
 
                 break;
                 case 'e':
-                    setRenderState(player_1.renderPlayer("e"));
-                    player_1.jumpRight();
-                    setTimeout(()=>{
-                        setRenderState(player_1.renderPlayer());
-                        checkposition()
-                    },1000)
+                    jumpR(player_1,setRenderState);
+                    checkposition()
                     Update();
                 break;
                 case 'q':
-                    setRenderState(player_1.renderPlayer("q"));
-                    setTimeout(()=>{
-                        player_1.jumpLeft()
-                        checkposition()
-                        setRenderState(player_1.renderPlayer());
-                        },1000)
-                        Update();
-                    
+                    jumpL(player_1,setRenderState);
+                    checkposition()
+                    Update();
+                break;
+                case 's':                 
+                    letguard(player_1,setRenderState,setGuard1);
+                    checkposition()
+                    Update();
+                break;
+                case 'k': 
+                    letguard(player_2,setRenderState2,setGuard2);
+                    checkposition()
+                    Update();
+                break;
+                case 'r': console.log("r is kick")
+                break;
+                case 'c': console.log("c is power")
+                break;
+                case 'n': console.log("n is power")
+                break;
+                case 'y': console.log("y is kick")
+                break;
+                case 'u':
+                    jumpR(player_2,setRenderState2);
+                    checkposition()
+                    Update();
+                break;
+                case 'o':
+                    jumpL(player_2,setRenderState2);
+                    checkposition()
+                    Update();
                 break;
                 case 'f':
+                    checkposition()
                     if(atackOn1 === true){
                         setRenderState(player_1.renderPlayer("f"));
                         player_1.isAtacking(true);
@@ -132,18 +238,54 @@ const Fight =()=>{
 
                 break;
                 case 'j':
+                    checkposition()
+                    if(player_2.flip===false){
+                        if(!checkRange(position1,position2)){
+                            player_2.move_right();
+                            if(onair===false){
+                                setRenderState2(player_2.renderPlayer());
+                            }
+                            Update();
+                        }else{
+                            setRenderState2(player_2.renderPlayer());
+                            Update();
+                        };
+                    }else{
                         player_2.move_right();
-                        setRenderState2(player_2.renderPlayer());
+                        if(onair===false){
+                            setRenderState2(player_2.renderPlayer());
+                        }
                         Update();
+                    }   
 
                 break;
                 case 'l':
-                    player_2.move_left();
-                    setRenderState2(player_2.renderPlayer());
-                    Update();
-
+                    checkposition()
+                    if(player_2.flip===true){
+                        if(!checkRange(position1,position2)){
+                            player_2.move_left()
+                            if(onair===false){
+                                setRenderState2(player_2.renderPlayer());
+                            }                            
+                            Update();
+                        }else{
+                            if(onair===false){
+                                setRenderState2(player_2.renderPlayer());
+                            }                            
+                            Update();
+                        };
+                    }else{
+                        player_2.move_left()
+                        if(onair===false){
+                            setRenderState2(player_2.renderPlayer());
+                        }
+                        Update();
+                    }
+                    
                 break;
                 case 'h':
+                    checkposition()
+
                     if(atackOn2 === true){
                         setRenderState2(player_2.renderPlayer("f"));
                         player_2.isAtacking(true);
@@ -174,6 +316,16 @@ const Fight =()=>{
                 break;
         }});
 
+        window.onkeydown =('keydown',(e)=>{
+            if(e.key==='s'){
+                guard(player_1,setRenderState,setGuard1);
+                checkposition()
+                Update();
+            }else if(e.key==='k'){
+                guard(player_2,setRenderState2,setGuard2);
+                checkposition()
+                Update();
+            }});
         
     const RenderGame=()=>{
         return(<div>
@@ -183,14 +335,16 @@ const Fight =()=>{
                             <div className="life">
                             {player_1
                             ?<div className="lifespawn">
-                                {player_1.name}{lifePlayer1}
+                                {lifePlayer1}
+                                {manaPlayer1}
                             </div>
                             :<div></div>
                             } 
                                 <img className="vs" src="/images/vs.png" alt=""/>
                                 {player_2
                             ?<div className="lifespawn">
-                                {player_2.name}{lifePlayer2}
+                                {lifePlayer2}
+                                {manaPlayer2}
                             </div>
                             :<div></div>
                             } 

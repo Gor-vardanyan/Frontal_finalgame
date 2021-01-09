@@ -49,8 +49,12 @@
 }
 .lifespawn{
     width: 35vw;
+    height: 5.5vh;
+    justify-content: center;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
     color: white;
+}
+.charactersize{
+    transition:ease-in-out;
 }
