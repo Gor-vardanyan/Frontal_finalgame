@@ -7,6 +7,8 @@
     width: 100vw;
 }
 .life{
+    position: absolute;
+    top: 15vh;
     width: 70vw;
     display: flex;
     justify-content: center;
@@ -48,12 +50,37 @@
     position: absolute;
 }
 .lifespawn{
-    width: 35vw;
+    width: 36vw;
     height: 5.5vh;
     justify-content: center;
     display: flex;
     flex-wrap: wrap;
     color: white;
+    margin-left: 1.5vw;
+    margin-right: 1.5vw;
+}
+.manaspawn{
+    width: 24vw;
+    height: 5.5vh;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    color: white;
+    margin-top: 0.5vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+.cont{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 36vw;
+}
+.cont2{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 36vw;
 }
 .charactersize{
     transition:ease-in-out;

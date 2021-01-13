@@ -20,9 +20,9 @@ const Fight =()=>{
     const [renderState,setRenderState]=useState(player_1.renderPlayer());
     const [renderState2,setRenderState2]=useState(player_2.renderPlayer());
     const [lifePlayer1,setLifePlayer1]=useState(player_1.renderLife());
-    const [lifePlayer2,setLifePlayer2]=useState(player_2.renderLife());
+    const [lifePlayer2,setLifePlayer2]=useState(player_2.renderLife(2));
     const [manaPlayer1,setManaPlayer1]=useState(player_1.renderMana());
-    const [manaPlayer2,setManaPlayer2]=useState(player_1.renderMana());
+    const [manaPlayer2,setManaPlayer2]=useState(player_2.renderMana(2));
     const [guard1, setGuard1] = useState(false);
     const [guard2, setGuard2] = useState(false);
     const [onair,setOnAir]=useState(false);
@@ -119,7 +119,29 @@ const Fight =()=>{
         fun(item.render(7.5,item.position_x,item.img));
         fun2(false);
     };
+    const kick =(item,fun)=>{
+    setOnAir(true)
+    fun(item.render(7.5,item.position_x,item.kick1));
+    console.log("1")
+    setTimeout(()=>{
+        console.log("2")
+        fun(item.render(7.5,item.position_x,item.kick2));
+        setTimeout(()=>{
+            console.log("3")
+            fun(item.render(7.5,item.position_x,item.kick3));
+            setTimeout(()=>{
+                console.log("4")
+                fun(item.render(7.5,item.position_x,item.kick4));
+                setTimeout(()=>{
+                    console.log("5")
+                    fun(item.renderPlayer());
+                    setOnAir(false)
+                },300)
+            },200)
+        },200)  
+    },100)
 
+    };
     const Update = useUpdate();
 
     window.onkeyup=('keyup',(e)=>{
@@ -175,14 +197,16 @@ const Fight =()=>{
 
                 break;
                 case 'e':
+                    if(onair===false){
                     jumpR(player_1,setRenderState);
                     checkposition()
-                    Update();
+                    Update()}
                 break;
                 case 'q':
+                    if(onair===false){
                     jumpL(player_1,setRenderState);
                     checkposition()
-                    Update();
+                    Update()}
                 break;
                 case 's':                 
                     letguard(player_1,setRenderState,setGuard1);
@@ -194,13 +218,20 @@ const Fight =()=>{
                     checkposition()
                     Update();
                 break;
-                case 'r': console.log("r is kick")
+                case 'r': 
+                if(onair===false){
+                    kick(player_1,setRenderState);
+                    checkposition();
+                    Update()};                 
                 break;
                 case 'c': console.log("c is power")
                 break;
                 case 'n': console.log("n is power")
                 break;
-                case 'y': console.log("y is kick")
+                case 'y': if(onair===false){
+                    kick(player_2,setRenderState2);
+                    checkposition();
+                    Update()};
                 break;
                 case 'u':
                     jumpR(player_2,setRenderState2);
@@ -220,7 +251,7 @@ const Fight =()=>{
                     }
                     if(checkRange(player_1.getPositionPercentage(),player_2.getPositionPercentage())){
                         player_2.get_dmg(player_1.strength);
-                        setLifePlayer2(player_2.renderLife())
+                        setLifePlayer2(player_2.renderLife(2))
                         Update();
                         
                         if(player_1.fight === false || player_2.fight === false){
@@ -334,17 +365,28 @@ const Fight =()=>{
                         :<div className="fighter">
                             <div className="life">
                             {player_1
-                            ?<div className="lifespawn">
-                                {lifePlayer1}
-                                {manaPlayer1}
+                            ?<div className="cont2">
+                                <div className="lifespawn">
+                                    {lifePlayer1}
+                                </div>
+                                <div className="manaspawn">
+                                    {manaPlayer1}
+                                {player_1.name}
+                                </div>
                             </div>
+
                             :<div></div>
                             } 
                                 <img className="vs" src="/images/vs.png" alt=""/>
                                 {player_2
-                            ?<div className="lifespawn">
-                                {lifePlayer2}
-                                {manaPlayer2}
+                            ?<div className="cont">
+                                <div className="lifespawn">
+                                    {lifePlayer2}
+                                </div>
+                                <div className="manaspawn">
+                                    {manaPlayer2}
+                                {player_2.name}
+                                </div>
                             </div>
                             :<div></div>
                             } 
@@ -358,7 +400,7 @@ const Fight =()=>{
                                     ?<div className="flip">{renderState2}</div>
                                     :<div></div>
                                 }
-                                <img className="imgstadium" src={'/Images/background3.jpg'} alt=""/>
+                                <img className="imgstadium" src={'/Images/background2.jpg'} alt=""/>
                             </div>    
                             <img className="imgteclado" src={'/Images/teclado.png'} alt=""/>
                             <img className="homeimage" src={'/Images/background.jpg'} alt=""/>

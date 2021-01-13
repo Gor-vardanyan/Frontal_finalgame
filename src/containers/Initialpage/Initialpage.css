@@ -18,12 +18,12 @@
     right: 0;
     height: 100vh;
     width: 100vw;
-    z-index: -1;
+    z-index: -2;
 }
 .game{
     width: 45vw;
     height: 100%;
-    background-color: blue;
+    background-color: #040404bd;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -31,36 +31,107 @@
 .player1{
     width: 20vw;
     height: 100%;
-    background-color: red;
+    color: blue;
+    display: flex;
+    justify-content: center;
+    background-image: linear-gradient(-75deg, black, #040404bd);
 }
 .player1_image {
+    display: flex;
     justify-content: flex-end;
     align-items: flex-end;
     width: 20vw;
     height: 100%;
-    background-color: red;
+}
+.adjust{
+    height: 50vh;
+    width: 20vw;
+    margin-right: 2vw;
+    margin-left: 2vw;
     display: flex;
+    justify-content: center;
+}
+.fixed{
+    height: 50vh;
+    width: 20vw;
+    background-color: darkblue;
+    margin-right: 2vw;
+    margin-left: 2vw;
+    display: flex;
+    justify-content: center;
+}
+.fixed2{
+    height: 50vh;
+    width: 20vw;
+    background-color: darkred;
+    margin-right: 2vw;
+    margin-left: 2vw;
+    display: flex;
+    justify-content: center;
+}
+.adjust > div > div{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.adjust > div > div > button{
+    cursor: pointer;
+    outline: none;
+    width: 16vw;
+    height: 2.8vh;
+    color: blue;
+    border-color: #0000ff78;
+    background-image: linear-gradient(100deg, transparent, black);
+    background-color: #0000ff78;
+}
+.adjust2{
+    height: 50vh;
+    width: 20vw;
+    margin-right: 2vw;
+    margin-left: 2vw;
+    display: flex;
+    justify-content: center;
+}
+.adjust2 > div > div{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.adjust2 > div > div > button{
+    cursor: pointer;
+    outline: none;
+    width: 16vw;
+    height: 2.8vh;
+    color: red;
+    border-color: #ff000078;
+    background-image: linear-gradient(100deg, transparent, black);
+    background-color: #ff000078;
 }
 .player2_image {
+    display: flex;
     justify-content: flex-end;
     align-items: flex-end;
     width: 20vw;
     height: 100%;
-    background-color: green;
-    display: flex;
     transform: rotatey(180deg);
 }
 .player2{
     width: 20vw;
     height: 100%;
-    background-color: green;
+    color: red;
+    display: flex;
+    justify-content: center;
+    background-image: linear-gradient(75deg, black, #040404bd);
 }
 .picker{
     display: flex;
     justify-content: center;
+    align-items: center;
     height: 15vh;
     width: 85vw;
-    background-color: blueviolet;
+    background-color: #040404bd;
 }
 .picksize{
     opacity: 100%;
@@ -96,12 +167,41 @@
     justify-content: center;
     padding: 1em;
 }
-.player_size{
+.player_size1{
+    position: absolute;
+    bottom: 15vh;
+    left: 37vw;
     height: 16vh;
     width: 6vw;
+}
+.player_size2{
+    position: absolute;
+    bottom: 0vh;
+    right: 7vw;
+    height: 16vh;
+    width: 6vw;
+}
+.player_back{
+    width: 20vw;
+    height: 50vh;
 }
 .fightbutton{
     position: absolute;
     justify-content: center;
     align-items: center;
+    animation: rounded 2s;
+    animation-fill-mode: forwards;
+    width: 5vw;
+    height: 9vh;
+    color: white;
+    background-image: linear-gradient(45deg, #000000, #272729);
+    border-radius: 1px;
+    outline: none;
 }
+button:hover{
+    transform: scale(1.26);
+}
+@keyframes rounded {
+    0% { border-radius: 1px }
+    100% {border-radius: 34px}
+  }

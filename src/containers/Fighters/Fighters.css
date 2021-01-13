@@ -1,0 +1,29 @@
+.nfocontent{
+    width: 85vw;
+    height: 80%;
+    background-color: #040404bd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.sinfocontent{
+    width: 85vw;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.player {
+    bottom: 15vh;
+    left: 37vw;
+    height: 16vh;
+    width: 6vw;
+}
+.possesion{
+    width: 9vw;
+    height: 12vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 3vw;
+}

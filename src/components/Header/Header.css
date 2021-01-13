@@ -10,9 +10,18 @@
     width: 16vw;
     margin: 2vh;
 }
+.logo2{
+    align-self: center;
+    width: 18vw;
+    margin: 2vh;
+}
 .logo:hover{
     cursor: pointer;
     width: 21vw;
+}
+.logo2:hover{
+    cursor: pointer;
+    width: 23vw;
 }
 .cont{
     display: flex;

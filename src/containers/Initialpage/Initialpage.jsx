@@ -14,12 +14,13 @@ const Initialpage =({dispatch})=>{
     var second ={};
     const [my_players, setMy_players]= useState(false);
     const [player_1,setPlayer_1]=useState();
-    const [player_1_info,setPlayer_1_info]=useState(false);
-    const [player_2,setPlayer_2]=useState();
-    const [player_2_info,setPlayer_2_info]=useState(false);
-    const [playerfixed,setPlayerfixed]=useState(1);
-    const [value]=useState(3);
-    const [fight,setFight]=useState(false);
+    const [player_1_info,setPlayer_1_info]= useState(false);
+    const [player_2,setPlayer_2]= useState();
+    const [player_2_info,setPlayer_2_info]= useState(false);
+    const [playerfixed,setPlayerfixed]= useState(1);
+    const [value]= useState(3);
+    const [fight,setFight]= useState(false);
+    
     const Update = useUpdate();
 
     useEffect(() => {
@@ -34,7 +35,8 @@ const Initialpage =({dispatch})=>{
           
         axios(config)
         .then(res =>{
-            setMy_players(res.data)
+            setMy_players(res.data);
+            //setMyPlayer(res.data);
 
         });
     }, []);
@@ -43,13 +45,19 @@ const Initialpage =({dispatch})=>{
             this.name = item.name;
             this.value = item.value;
             this.img = '/images/Figheters/'+item.name+'/Pose/'+item.name+'.gif';
-            this.punch = '/images/Figheters/'+item.name+'/Fight/punch.png';
-            this.guard = '/images/Figheters/'+item.name+'/Fight/guard.png';
+            this.punch ='/images/Figheters/'+item.name+'/Fight/punch.png';
+            this.guard ='/images/Figheters/'+item.name+'/Fight/guard.png';
             this.jump1 ='/images/Figheters/'+item.name+'/jump/jump.png';
             this.jump2 ='/images/Figheters/'+item.name+'/jump/jump2.png';
             this.jump3 ='/images/Figheters/'+item.name+'/jump/jump3.png';
             this.jump4 ='/images/Figheters/'+item.name+'/jump/jump4.png';
             this.jump5 ='/images/Figheters/'+item.name+'/jump/jump5.png';
+            this.kick1 ='/images/Figheters/'+item.name+'/Fight/kick.png';
+            this.kick2 ='/images/Figheters/'+item.name+'/Fight/kick2.png';
+            this.kick3 ='/images/Figheters/'+item.name+'/Fight/kick3.png';
+            this.kick4 ='/images/Figheters/'+item.name+'/Fight/kick4.png';
+            this.selected ='/images/Figheters/'+item.name+'/Pose/Ready.gif'
+            this.selected_background ='/images/Figheters/'+item.name+'/Pose/background.jpg'
             this.max_health = item.health;
             this.health = item.health;
             this.max_mana = item.mana;
@@ -83,8 +91,8 @@ const Initialpage =({dispatch})=>{
         get_dmg(num){
             this.health -= num;
             if((this.health*this.max_health)/100 === 0 || (this.max_health-this.health) <= 0 ){ 
-                console.log("endgame")
-                this.fight = false
+                console.log("endgame");
+                this.fight = false;
             };
         };
         move_right(){
@@ -118,11 +126,21 @@ const Initialpage =({dispatch})=>{
             return this.is_atacking;
         };
         render(jump,posit,process){
-            let styleish = {
+            let styleish= {};
+            
+            if(this.flip ===true){
+            let pos = (this.position_x- 2);
+            styleish = {
+                   position: "absolute",
+                   left: `${pos}vw`, 
+                   bottom: `${jump}vh`,
+                   transform: "rotateY(180deg)"
+            }}else{
+            styleish = {
                 position: "absolute",
                 left: `${posit}vw`, 
                 bottom: `${jump}vh`,
-            };
+            }};
             return(<div style={styleish} >
                 <img className="charactersize" src={process} alt=""/>
                 </div>);
@@ -166,27 +184,99 @@ const Initialpage =({dispatch})=>{
             };   
         };
 
-        renderLife(){
-           let actual_health = this.getHealthPercentage();
+        renderLife(num){
+            let life = this.max_health - this.health;
+            let percentage = (life * 100)/this.max_health;
+            let actual_health = ((100*100)/100) - percentage;
+
+            let back = {
+                width: `100%`,
+                height: "5vh",
+                backgroundColor: "red",
+                border: "2px solid",
+                borderColor: "black",
+                alignItems: "center",
+                borderRadius: "20px",
+                display: "flex",
+                justifyContent: "flex-start",
+            } 
+            if(num===2){
+                back = {
+                    width: `100%`,
+                    height: "5vh",
+                    backgroundColor: "red",
+                    border: "2px solid",
+                    borderColor: "black",
+                    alignItems: "center",
+                    borderRadius: "20px",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                }
+            }
+            
            let styleish = {
                 width: `${actual_health}%`,
-                height: "5vh",
-                backgroundColor: "#4CAF50",
-                border: "solid 2px"
+                height: "4.4vh",
+                backgroundColor: "yellow",
+                border: "2px solid",
+                borderColor: "white",
+                color: "black",
+                alignItems: "center",
+                borderRadius: "18px",
+                display: "flex",
+                justifyContent: "center",
             }
-            return (<div style={styleish}>{this.health}</div>);
+            return (
+                <div style={back}>
+                <div style={styleish}>{this.health}</div>
+                </div>);
         };
-        renderMana(){
-            let actual_mana = this.getManaPercentage();
+        renderMana(num){
+            let energy = this.max_mana - this.mana;
+            let percentage = (energy * 100)/this.max_mana;
+            let actual_mana = ((100*100)/100) - percentage;
+
+            let back = {
+                width: `100%`,
+                height: "4vh",
+                backgroundColor: "gray",
+                border: "2px solid",
+                borderColor: "black",
+                alignItems: "center",
+                borderRadius: "15px",
+                display: "flex",
+                justifyContent: "flex-start",
+            } 
+            if(num===2){
+                back = {
+                    width: `100%`,
+                    height: "4vh",
+                    backgroundColor: "gray",
+                    border: "2px solid",
+                    borderColor: "black",
+                    alignItems: "center",
+                    borderRadius: "15px",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    
+                }
+            }
             let styleish = {
                  width: `${actual_mana}%`,
-                 height: "5vh",
+                 height: "3.5vh",
                  backgroundColor: "blue",
-                 border: "solid 2px"
+                 border: "2px solid",
+                 borderColor: "white",
+                 color: "black",
+                 alignItems: "center",
+                 borderRadius: "15px",
+                 display: "flex",
+                 justifyContent: "center",
              }
-             return (<div style={styleish}>{this.mana}</div>);
+             return (<div style={back}>
+                    <div style={styleish}>{this.mana}</div>
+                    </div>);
         }
-
     }; 
     
     
@@ -200,9 +290,15 @@ const Initialpage =({dispatch})=>{
             <p>{item.description}</p>
             {clase
             ?<div></div>
-            :<button onClick={ () => setPlayerfixed(playerfixed+1) }>Pick</button>
+            :<button onClick={ () => fixplayer(item) }>Pick</button>
             }
             </div>);
+    };
+    const fixplayer=(item)=>{
+        if(playerfixed===1){
+            
+        }
+        setPlayerfixed(playerfixed+1)
     };
 
     const player_selector = (num,item)=>{
@@ -213,7 +309,6 @@ const Initialpage =({dispatch})=>{
                 dispatch({ type: "player_1", payload: first, player_2 });
                 setPlayer_1(first);
                 setPlayer_1_info(renderStats(item));
-
                 break;
     
             case 2: 
@@ -221,8 +316,8 @@ const Initialpage =({dispatch})=>{
                 dispatch({ type: "player_2", player_1, payload: second });
                 setPlayer_2(second);
                 setPlayer_2_info(renderStats(item));
-
                 break;   
+            
             default: console.log("none");
                 break
         }
@@ -259,32 +354,48 @@ const Initialpage =({dispatch})=>{
                     <div className="contenedor">
                         <div className="player1">
                             {player_1
-                            ?<div className="centered">{player_1_info}</div>
+                            ?<div className="adjust">
+                               {playerfixed >=2
+                                ?<div className="fixed">{player_1_info}</div>
+                                :<div>{player_1_info}</div>} 
+                            </div>
                             :<div></div>
                             }                    
                         </div>
                         <div className="game">
                             <div className="player1_image">
                             {player_1
-                                ?<img className="player_size" src={player_1.img} alt=""/>
+                                ?<div>
+                                    <img className="player_size1" src={player_1.selected} alt=""/>
+                                    <img className="player_back" src={player_1.selected_background} alt=""/>
+                                    </div>
                                 :<div></div>
                             }</div>
                             <div className="player2_image">
                             {player_2
-                                ?<img className="player_size" src={player_2.img} alt=""/>
+                                ?<div>
+                                    <img className="player_size2" src={player_2.selected} alt=""/>
+                                    <img className="player_back" src={player_2.selected_background} alt=""/>
+                                </div>
                                 :<div></div>
                             }</div>
                         </div>
                         <div className="player2">
                         {player_2
-                            ?<div className="centered">{player_2_info}</div>
+                            ?<div className="adjust2">
+                                {playerfixed === 3
+                                ?<div className="fixed2">{player_2_info}</div>
+                                :<div>{player_2_info}</div>}
+                                </div>
                             :<div></div>
                             } 
                         </div>
                         <img className="homeimage" src={'/Images/background.jpg'} alt=""/>
                     </div>
                     {value === playerfixed
-                        ?<div className="fightbutton"><button onClick={()=>play()}>Fight!</button></div>
+                        ?<div style={{position: "absolute", justifyContent: "center", alignItems: "center",left: "47.5vw",top: "53vh"}}>
+                            <button className="fightbutton" onClick={()=>play()}>Fight!</button>
+                            </div>
                         :<div></div>
                     }
                     </div>

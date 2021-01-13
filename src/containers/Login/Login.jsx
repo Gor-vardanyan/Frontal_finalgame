@@ -21,9 +21,9 @@ const Login =({ setUser })=>{
         console.log(loguser)
          axios.post('https://finalgamedb.herokuapp.com/login', loguser)
          .then(res => {
-             setUser(res.data) //seteo el user como estado del App.js
+             setUser(res.data.user) //seteo el user como estado del App.js
              localStorage.setItem('authToken', res.data.user.token);
-             localStorage.setItem('user', JSON.stringify(res.data.user.nickname))
+             localStorage.setItem('user', JSON.stringify(res.data.user))
              alert("Welcome back" )
              setTimeout(() => {
                  history.push('/')
