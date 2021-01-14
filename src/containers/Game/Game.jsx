@@ -21,7 +21,7 @@ const Game =() =>{
                     <h2>Select Game</h2>
                     <button onClick={playervspc} style={{color:'gray'}} className="button">Player vs PC</button>
                     <button onClick={playervsplayer} className="button">Player vs Player</button>
-                    <button onClick={training} className="button">Training</button>
+                    <button onClick={training} style={{color:'gray'}} className="button">Training</button>
                 </div>
                 <img className="homeimage" src={'/Images/background.jpg'} alt=""/>
             </div>

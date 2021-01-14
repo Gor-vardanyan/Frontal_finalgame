@@ -2,11 +2,6 @@ import React, { useEffect, useState } from 'react';
 import './Fighters.css';
 import axios from 'axios';
 
-const useUpdate = () => {
-    const set = useState(0)[1];
-    return () => set((s) => s + 1);
-};
-
 const Fighters =({user,setUser}) =>{
     const [player, setplayer] = useState();
     const [info, setInfo] = useState(false)
@@ -14,7 +9,6 @@ const Fighters =({user,setUser}) =>{
     const [myPlayers,setMyPlayers] = useState(false);
     const [creditos, setCreditos] = useState(user.credit)
     const [Updater, setUpdater] = useState(0)
-    const Update = useUpdate();
 
     useEffect(() => {   
         let token = localStorage.getItem("authToken");
@@ -63,8 +57,6 @@ const Fighters =({user,setUser}) =>{
         };
     }
 
-
-
     const selectorController = (item) => {
         let first = new Fighters(item);
         setplayer(first);
@@ -108,7 +100,7 @@ const Fighters =({user,setUser}) =>{
 
         axios(config)
         .then((res)=>{
-            let response = res.status;
+            let response = res.data.status;
             if(!response===false){
                 let token = localStorage.getItem("authToken");
                 let conf = {
@@ -124,11 +116,11 @@ const Fighters =({user,setUser}) =>{
                 localStorage.setItem('user',JSON.stringify(res.data));
                 setCreditos(res.data.credit);
                 setUpdater(Updater+1);
+                setInfo(renderStats(item,true))
                 })
             }else{
-
+                alert(res.data.message)
             }
-            setInfo(renderStats(item,true))
         })
     };
 

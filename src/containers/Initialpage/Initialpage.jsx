@@ -9,7 +9,7 @@ const useUpdate = () => {
     return () => set((s) => s + 1);
 };
 
-const Initialpage =({dispatch})=>{
+const Initialpage =({dispatch, user , setUser})=>{
     var first = {};
     var second ={};
     const [my_players, setMy_players]= useState(false);
@@ -65,7 +65,8 @@ const Initialpage =({dispatch})=>{
             this.strength = item.strength;
             this.power = item.power;
             this.playerfixed = 1;
-            this.is_atacking = false;
+            this.game = false;
+            this.attack =false;
             this.flip = false;
             this.fight = true;
             this.position_x = 15;
@@ -90,9 +91,10 @@ const Initialpage =({dispatch})=>{
         };
         get_dmg(num){
             this.health -= num;
-            if((this.health*this.max_health)/100 === 0 || (this.max_health-this.health) <= 0 ){ 
+            if((this.health*this.max_health)/100 <= 0 || (this.max_health-this.health) <= 0 ){ 
                 console.log("endgame");
-                this.fight = false;
+                this.health = this.max_health;
+                this.fight = true;
             };
         };
         move_right(){
@@ -108,6 +110,7 @@ const Initialpage =({dispatch})=>{
                }
             }
         };
+
         move_left(){
             let calc = (this.position_x - this.boundries.min)
             if(calc > 5){
@@ -121,67 +124,48 @@ const Initialpage =({dispatch})=>{
                }
             }
         };
-        isAtacking(status){
-            this.is_atacking = status; 
-            return this.is_atacking;
-        };
+
         render(jump,posit,process){
             let styleish= {};
-            
-            if(this.flip ===true){
-            let pos = (this.position_x- 2);
-            styleish = {
-                   position: "absolute",
-                   left: `${pos}vw`, 
-                   bottom: `${jump}vh`,
-                   transform: "rotateY(180deg)"
-            }}else{
-            styleish = {
-                position: "absolute",
-                left: `${posit}vw`, 
-                bottom: `${jump}vh`,
-            }};
-            return(<div style={styleish} >
-                <img className="charactersize" src={process} alt=""/>
-                </div>);
-        };
-
-        renderPlayer(key){
-            let styleish={};
-            let pos = this.position_x;
+            if(this.game === true){
+                this.position_x = posit
+                console.log("now is "+this.position_x)
+            }
+            if(this.flip === true){
+                console.log("fliped")
+                let pos = this.position_x;
                 styleish = {
                     position: "absolute",
                     left: `${pos}vw`, 
-                    bottom: "7.5vh",
-                    boxShadow: "0px, 16px, 20px, -20px",
-                };
-            if(key==="f" && !this.is_atacking){     
-                if(this.flip ===true){
-                    pos = (this.position_x- 2);
+                    bottom: `${jump}vh`,
+                    transform: "rotateY(180deg)" }
+
+                
+                if(this.attack === true){
+                    console.log("attaked")
                     styleish = {
-                       position: "absolute",
-                       left: `${pos}vw`, 
-                       bottom: "7.5vh",
-                       transform: "rotateY(180deg)"
-                    }
-                }         
-                console.log("update")
-                return (<div style={styleish} >
-                    <img className="charactersize" src={this.punch} alt=""/>
-                    </div>);
-            }else{
-                if(this.flip ===true){
-                    styleish = {
-                       position: "absolute",
-                       left: `${pos}vw`, 
-                       bottom: "7.5vh",
-                       transform: "rotateY(180deg)"
-                    }
+                        position: "absolute",
+                        left: `${posit}vw`, 
+                        bottom: `${jump}vh`,
+                        transform: "rotateY(180deg)" }
+                        
+                        return(<div style={styleish} >
+                            <img className="charactersize" src={process} alt=""/>
+                            </div>);
                 }
-                return (<div style={styleish} >
-                        <img className="charactersize" src={this.img} alt=""/>
-                        </div>);
-            };   
+
+            }else{
+                console.log("is "+this.position_x)
+
+                styleish = {
+                    position: "absolute",
+                    left: `${posit}vw`, 
+                    bottom: `${jump}vh` }
+                    
+            };
+            return(<div style={styleish} >
+                <img className="charactersize" src={process} alt=""/>
+                </div>);
         };
 
         renderLife(num){
@@ -226,6 +210,22 @@ const Initialpage =({dispatch})=>{
                 display: "flex",
                 justifyContent: "center",
             }
+            if(num==="full"){
+                this.health =this.max_health
+                 styleish = {
+                    width: `${this.max_health}%`,
+                    height: "4.4vh",
+                    backgroundColor: "yellow",
+                    border: "2px solid",
+                    borderColor: "white",
+                    color: "black",
+                    alignItems: "center",
+                    borderRadius: "18px",
+                    display: "flex",
+                    justifyContent: "center",
+                }
+            }
+            
             return (
                 <div style={back}>
                 <div style={styleish}>{this.health}</div>
@@ -338,66 +338,69 @@ const Initialpage =({dispatch})=>{
 
     return( <div>     
                 {fight
-                    ?<Fight ></Fight>
+                    ?<Fight user={user} setUser={setUser} ></Fight>
                     :<div className="home2">
-                    {my_players
-                    ?<div className="picker">
-                            {my_players.map((item)=>{ 
-                                return (
-                                <div onClick={()=> selectorController(playerfixed, item)} className='picksize'>
-                                <img src={'/images/Figheters/'+item.name+'/Img/pick'+item.name.toLowerCase()+'.png'} alt=""></img>
-                                </div>)
-                                })}
-                    </div>
-                    :<div></div>
-                    }
-                    <div className="contenedor">
-                        <div className="player1">
-                            {player_1
-                            ?<div className="adjust">
-                               {playerfixed >=2
-                                ?<div className="fixed">{player_1_info}</div>
-                                :<div>{player_1_info}</div>} 
+                        {my_players
+                        ?<div className="myp">
+                            <div>My players</div>
+                            <div className="picker">
+                                {my_players.map((item)=>{ 
+                                    return (
+                                    <div onClick={()=> selectorController(playerfixed, item)} className='picksize'>
+                                    <img src={'/images/Figheters/'+item.name+'/Img/pick'+item.name.toLowerCase()+'.png'} alt=""></img>
+                                    </div>)
+                                    })}
                             </div>
-                            :<div></div>
-                            }                    
                         </div>
-                        <div className="game">
-                            <div className="player1_image">
-                            {player_1
-                                ?<div>
-                                    <img className="player_size1" src={player_1.selected} alt=""/>
-                                    <img className="player_back" src={player_1.selected_background} alt=""/>
+                        :<div></div>
+                        }
+                        <div className="contenedor">
+                            <div className="player1">
+                                {player_1
+                                ?<div className="adjust">
+                                {playerfixed >=2
+                                    ?<div className="fixed">{player_1_info}</div>
+                                    :<div>{player_1_info}</div>} 
+                                </div>
+                                :<div></div>
+                                }                    
+                            </div>
+                            <div className="game">
+                                <div className="player1_image">
+                                {player_1
+                                    ?<div>
+                                        <img className="player_size1" src={player_1.selected} alt=""/>
+                                        <img className="player_back" src={player_1.selected_background} alt=""/>
+                                        </div>
+                                    :<div></div>
+                                }</div>
+                                <div className="player2_image">
+                                {player_2
+                                    ?<div>
+                                        <img className="player_size2" src={player_2.selected} alt=""/>
+                                        <img className="player_back" src={player_2.selected_background} alt=""/>
+                                    </div>
+                                    :<div></div>
+                                }</div>
+                            </div>
+                            <div className="player2">
+                            {player_2
+                                ?<div className="adjust2">
+                                    {playerfixed === 3
+                                    ?<div className="fixed2">{player_2_info}</div>
+                                    :<div>{player_2_info}</div>}
                                     </div>
                                 :<div></div>
-                            }</div>
-                            <div className="player2_image">
-                            {player_2
-                                ?<div>
-                                    <img className="player_size2" src={player_2.selected} alt=""/>
-                                    <img className="player_back" src={player_2.selected_background} alt=""/>
-                                </div>
-                                :<div></div>
-                            }</div>
+                                } 
+                            </div>
+                            <img className="homeimage" src={'/Images/background.jpg'} alt=""/>
                         </div>
-                        <div className="player2">
-                        {player_2
-                            ?<div className="adjust2">
-                                {playerfixed === 3
-                                ?<div className="fixed2">{player_2_info}</div>
-                                :<div>{player_2_info}</div>}
+                        {value === playerfixed
+                            ?<div style={{position: "absolute", justifyContent: "center", alignItems: "center",left: "47.5vw",top: "53vh"}}>
+                                <button className="fightbutton" onClick={()=>play()}>Fight!</button>
                                 </div>
                             :<div></div>
-                            } 
-                        </div>
-                        <img className="homeimage" src={'/Images/background.jpg'} alt=""/>
-                    </div>
-                    {value === playerfixed
-                        ?<div style={{position: "absolute", justifyContent: "center", alignItems: "center",left: "47.5vw",top: "53vh"}}>
-                            <button className="fightbutton" onClick={()=>play()}>Fight!</button>
-                            </div>
-                        :<div></div>
-                    }
+                        }
                     </div>
                 }
             </div>

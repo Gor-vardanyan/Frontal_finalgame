@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Profile.css';
 
-const Profile =() =>{
+const Profile =({user, setUser}) =>{
     const [render, setRender] = useState(false)
 
     useEffect(() => {
@@ -16,6 +16,7 @@ const Profile =() =>{
           };
           axios(config)
           .then((res)=>{
+              setUser(res.data)
             setRender(res.data)
         })
     }, []);
@@ -32,7 +33,7 @@ const Profile =() =>{
                             <p>Players: {render.players.map((item)=>{ return <div>{item}</div>})}</p>
                             <p>Credits: {render.credit} <img style={{ width: "20px"}} src="/Images/goldCoin.gif" alt=""/></p>
                         </div>
-                    <p>win fights to get more credits</p>
+                    <p>Win fights to get more credits</p>
                 </div>
                 :<div></div>
                 }

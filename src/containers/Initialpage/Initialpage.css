@@ -129,8 +129,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 15vh;
-    width: 85vw;
+    margin: 1vh;
+}
+.myp{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1vw;
+    color: white;
+    width: 83vw;
     background-color: #040404bd;
 }
 .picksize{
