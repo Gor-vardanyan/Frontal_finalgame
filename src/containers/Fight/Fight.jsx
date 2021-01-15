@@ -60,54 +60,62 @@ const Fight =({user, setUser})=>{
 
     const jumpR=(item, fun, jump)=>{
         jump(true)
-    fun(item.render(7.5,item.position_x,item.jump1));
-    setTimeout(()=>{
-        fun(item.render(12,item.position_x,item.jump2));
-        item.move_right()
+        fun(item.render(7.5,item.position_x,item.jump1));
+        Update();
         setTimeout(()=>{
-            fun(item.render(22,item.position_x,item.jump3));
+            fun(item.render(12,item.position_x,item.jump2));
+            Update();
             item.move_right()
             setTimeout(()=>{
-                fun(item.render(12,item.position_x,item.jump4));
+                fun(item.render(22,item.position_x,item.jump3));
+                Update();
                 item.move_right()
                 setTimeout(()=>{
-                    fun(item.render(7.5,item.position_x,item.jump1));
+                    fun(item.render(12,item.position_x,item.jump4));
+                    Update();
+                    item.move_right()
                     setTimeout(()=>{
-                        fun(item.render(7.5, item.position_x, item.img));
-                        jump(false)
+                        fun(item.render(7.5,item.position_x,item.jump1));
+                        Update();
+                        setTimeout(()=>{
+                            fun(item.render(7.5, item.position_x, item.img));
+                            Update();
+                            jump(false)
+                        },150)
                     },150)
                 },150)
-            },150)
-        },150)  
-    },100)
-
+            },150)  
+        },100)
     };
 
     const jumpL=(item, fun, jump)=>{
         jump(true)
-    fun(item.render(7.5,item.position_x,item.jump1));
-    setTimeout(()=>{
-        fun(item.render(12,item.position_x,item.jump2));
-        item.move_left()
+        fun(item.render(7.5,item.position_x,item.jump1));
+        Update();
         setTimeout(()=>{
-            fun(item.render(22,item.position_x,item.jump3));
+            fun(item.render(12,item.position_x,item.jump2));
+            Update();
             item.move_left()
             setTimeout(()=>{
-                fun(item.render(12,item.position_x,item.jump4));
+                fun(item.render(22,item.position_x,item.jump3));
+                Update();
                 item.move_left()
                 setTimeout(()=>{
-                    fun(item.render(7.5,item.position_x,item.jump1));
+                    fun(item.render(12,item.position_x,item.jump4));
+                    Update();
+                    item.move_left()
                     setTimeout(()=>{
-                        fun(item.render(7.5, item.position_x, item.img));
-                        jump(false)
+                        fun(item.render(7.5,item.position_x,item.jump1));
+                        Update();
+                        setTimeout(()=>{
+                            fun(item.render(7.5, item.position_x, item.img));
+                            Update();
+                            jump(false)
+                        },150)
                     },150)
                 },150)
-            },150)
-        },150)  
-    },100)
-
-  
-
+            },150)  
+        },100)
     };
 
     const guard =(item,fun,fun2)=>{
@@ -125,14 +133,19 @@ const Fight =({user, setUser})=>{
     const kick =(item,fun,attack)=>{
         attack(true);
         fun(item.render(7.5,item.position_x,item.kick1));
+        Update();
         setTimeout(()=>{
             fun(item.render(7.5,item.position_x,item.kick2));
+            Update();
             setTimeout(()=>{
                 fun(item.render(7.5,item.position_x,item.kick3));
+                Update();
                 setTimeout(()=>{
                     fun(item.render(7.5,item.position_x,item.kick4));
+                    Update();
                     setTimeout(()=>{
                         fun(item.render(7.5, item.position_x, item.img));
+                        Update();
                         attack(false);
                     },300)
                 },200)
@@ -156,6 +169,7 @@ const Fight =({user, setUser})=>{
     const soryuken=(item, fun, attack, move)=>{
         attack(true)
         fun(item.render(7.5,item.position_x,item.soryuken1));
+        Update();
         if(item.flip === true){
             item.move_left()
         }else{
@@ -163,6 +177,7 @@ const Fight =({user, setUser})=>{
         }
         setTimeout((move)=>{
             fun(item.render(7.5,item.position_x,item.soryuken2));
+            Update();
             if(item.flip === true){
                 item.move_left()
             }else{
@@ -170,6 +185,7 @@ const Fight =({user, setUser})=>{
             }
             setTimeout((move)=>{
                 fun(item.render(22,item.position_x,item.soryuken3));
+                Update();
                 if(item.flip === true){
                     item.move_left()
                 }else{
@@ -177,8 +193,10 @@ const Fight =({user, setUser})=>{
                 }
             setTimeout(()=>{
                     fun(item.render(12,item.position_x,item.soryuken4));
+                    Update();
                     setTimeout(()=>{
                         fun(item.render(7.5,item.position_x,item.soryuken5));
+                        Update();
                         setTimeout(()=>{
                             fun(item.render(7.5, item.position_x, item.img));
                             attack(false)
