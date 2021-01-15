@@ -147,7 +147,7 @@ const Fighters =({user,setUser}) =>{
                     </div>
                 </div>
             </div>
-            <img className="homeimage" src={'/Images/background.jpg'} alt=""/>
+            <img className="homeimage" src={'/images/background.jpg'} alt=""/>
         </div>
                         
         </div>

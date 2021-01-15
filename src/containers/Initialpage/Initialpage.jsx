@@ -416,7 +416,7 @@ const Initialpage =({dispatch, user , setUser})=>{
                                 :<div></div>
                                 } 
                             </div>
-                            <img className="homeimage" src={'/Images/background.jpg'} alt=""/>
+                            <img className="homeimage" src={'/images/background.jpg'} alt=""/>
                         </div>
                         {value === playerfixed
                             ?<div style={{position: "absolute", justifyContent: "center", alignItems: "center",left: "47.5vw",top: "53vh"}}>

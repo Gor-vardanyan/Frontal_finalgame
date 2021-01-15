@@ -30,15 +30,15 @@ const Profile =({user, setUser}) =>{
                         <div className="sec">
                             <h2>{render.nickname}</h2>
                             <p>Email: {render.email}</p>
-                            <p>Players: {render?.players?.map((item)=>{ return <div>{item}</div>})}</p>
-                            <p>Credits: {render.credit} <img style={{ width: "20px"}} src="/Images/goldCoin.gif" alt=""/></p>
+                            <p>Players: {render.players.map((item)=>{ return <div>{item}</div>})}</p>
+                            <p>Credits: {render.credit} <img style={{ width: "20px"}} src="/images/goldCoin.gif" alt=""/></p>
                         </div>
                     <p>Win fights to get more credits</p>
                 </div>
                 :<div></div>
                 }
                 </div>
-                <img className="homeimage" src={'/Images/background.jpg'} alt=""/>
+                <img className="homeimage" src={'/images/background.jpg'} alt=""/>
             </div>
                     
     </div>)};

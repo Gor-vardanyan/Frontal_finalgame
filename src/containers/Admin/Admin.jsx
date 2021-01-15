@@ -37,11 +37,11 @@ const Admin =() =>{
                         <p>Email: {item.email}</p>
                         <p>Players: {item.players?.map((vit)=>{ return <div>{vit}</div>})}</p>
                         <p>Credits: {item.credit} 
-                        <img style={{ width: "20px"}} src="/Images/goldCoin.gif" alt=""/></p>
+                        <img style={{ width: "20px"}} src="/images/goldCoin.gif" alt=""/></p>
                         <button onClick={()=> deleteUser(item)}></button>
                         </div>)})}
                 </div></div>
-                <img className="homeimage" src={'/Images/background.jpg'} alt=""/>
+                <img className="homeimage" src={'/images/background.jpg'} alt=""/>
             </div>
                     
     </div>)};

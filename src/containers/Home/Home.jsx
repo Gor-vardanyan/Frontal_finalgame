@@ -6,7 +6,7 @@ const Home = ({setUser}) => {
     return( 
         <div className="home">
             <Login setUser={setUser}></Login>
-            <img className="homeimage" src={'/Images/background.jpg'} alt=""/>
+            <img className="homeimage" src={'/images/background.jpg'} alt=""/>
         </div>
     )
 }

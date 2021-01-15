@@ -584,10 +584,10 @@ const Fight =({user, setUser})=>{
                                     ?<div className="flip">{renderState2}</div>
                                     :<div></div>
                                 }
-                                <img className="imgstadium" src={'/Images/background2.jpg'} alt=""/>
+                                <img className="imgstadium" src={'/images/background2.jpg'} alt=""/>
                             </div>    
-                            <img className="imgteclado" src={'/Images/teclado.png'} alt=""/>
-                            <img className="homeimage" src={'/Images/background.jpg'} alt=""/>
+                            <img className="imgteclado" src={'/images/teclado.png'} alt=""/>
+                            <img className="homeimage" src={'/images/background.jpg'} alt=""/>
                         </div>
                     }
         

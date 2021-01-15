@@ -23,7 +23,7 @@ const Game =() =>{
                     <button onClick={playervsplayer} className="button">Player vs Player</button>
                     <button onClick={training} style={{color:'gray'}} className="button">Training</button>
                 </div>
-                <img className="homeimage" src={'/Images/background.jpg'} alt=""/>
+                <img className="homeimage" src={'/images/background.jpg'} alt=""/>
             </div>
                     
     </div>)};
