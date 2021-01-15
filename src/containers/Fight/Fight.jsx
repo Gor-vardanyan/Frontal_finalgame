@@ -33,21 +33,19 @@ const Fight =({user, setUser})=>{
     const [atackOn1,setAtackOn1]=useState(false);
     const [atackOn2,setAtackOn2]=useState(false);
     
-    const [winPlayer1, setWinPlayer1] = useState(0);
-    const [winPlayer2, setWinPlayer2] = useState(0);
+    const [winPlayer1, setWinPlayer1] = useState(1);
+    const [winPlayer2, setWinPlayer2] = useState(1);
     
     const [Declared, setDeclared] = useState(false)
 
     const checkRange = (pos_player1, pos_player2) =>{
         var calc = ((pos_player1 + pos_player2) - 100);
-        console.log(pos_player1)
-        console.log(pos_player2)
-        console.log((pos_player1+pos_player2)-100)
-
-
         return ( calc > -10 && calc < 5)
     };
-
+    const checkSecialRange = (pos_player1, pos_player2) =>{
+        var calc = ((pos_player1 + pos_player2) - 100);
+        return ( calc > -20 && calc < 10)
+    };
     const checkposition=()=>{
     let position =(player_1.getPositionPercentage()+player_2.getPositionPercentage() - 100);
        if(position > -1){
@@ -77,10 +75,10 @@ const Fight =({user, setUser})=>{
                     setTimeout(()=>{
                         fun(item.render(7.5, item.position_x, item.img));
                         jump(false)
-                    },200)
-                },300)
-            },200)
-        },200)  
+                    },150)
+                },150)
+            },150)
+        },150)  
     },100)
 
     };
@@ -102,10 +100,10 @@ const Fight =({user, setUser})=>{
                     setTimeout(()=>{
                         fun(item.render(7.5, item.position_x, item.img));
                         jump(false)
-                    },200)
-                },300)
-            },200)
-        },200)  
+                    },150)
+                },150)
+            },150)
+        },150)  
     },100)
 
   
@@ -155,25 +153,68 @@ const Fight =({user, setUser})=>{
         },200)
     };
 
+    const soryuken=(item, fun, attack, move)=>{
+        attack(true)
+        fun(item.render(7.5,item.position_x,item.soryuken1));
+        if(item.flip === true){
+            item.move_left()
+        }else{
+            item.move_right()
+        }
+        setTimeout((move)=>{
+            fun(item.render(7.5,item.position_x,item.soryuken2));
+            if(item.flip === true){
+                item.move_left()
+            }else{
+                item.move_right()
+            }
+            setTimeout((move)=>{
+                fun(item.render(22,item.position_x,item.soryuken3));
+                if(item.flip === true){
+                    item.move_left()
+                }else{
+                    item.move_right()
+                }
+            setTimeout(()=>{
+                    fun(item.render(12,item.position_x,item.soryuken4));
+                    setTimeout(()=>{
+                        fun(item.render(7.5,item.position_x,item.soryuken5));
+                        setTimeout(()=>{
+                            fun(item.render(7.5, item.position_x, item.img));
+                            attack(false)
+                        },150)
+                    },150)
+                },150)
+            },150)  
+        },100)
+    };
+
+    
     const endfirst=(item,item2)=>{
         player_1.game = true;
         player_2.game = true; 
+        player_2.no_mana = false;
+        player_1.no_mana= false;
+        player_2.fight = false;
+        player_1.fight= false;
         setRenderState(player_1.render(7.5, 15, player_1.img))
         setRenderState2(player_2.render(7.5, 15, player_2.img))
         setLifePlayer1(player_1.renderLife("full"))
         setLifePlayer2(player_2.renderLife("full"))
+
+        setManaPlayer1(player_1.renderMana("full"))
+        setManaPlayer2(player_2.renderMana("full"))
         checkposition()
-        item(item2+1);
-        player_2.fight = false;
-        player_1.fight= false;
-        Update();
+        item(item2+1); // prarameters
         winner()       
+
+        Update();
     }
 
     const winner=()=>{
-        if(winPlayer2===2){
+        if(winPlayer2 === 2){
             return setDeclared(player_2)
-        }else if(winPlayer1===2){
+        }else if(winPlayer1 === 2){
             return setDeclared(player_1)
         }
     }
@@ -308,7 +349,32 @@ const Fight =({user, setUser})=>{
                     }
                 break;
                 case 'c': 
-                    console.log("c is power")
+                    if(!atackOn1===true && onAir1===false){
+                        checkposition()
+                        if(!player_1.no_mana === true){
+                            if(checkSecialRange(position1,position2)){
+                                player_2.fight = false;
+                                soryuken(player_1, setRenderState, setAtackOn1)
+                                player_1.get_mna(20);
+                                setManaPlayer1(player_1.renderMana(2))
+                                if(guard2===false){
+                                    player_2.get_dmg(player_1.power);
+                                }else if(guard2===true){
+                                    player_2.get_dmg(5);
+                                }
+                                setLifePlayer2(player_2.renderLife(2))
+                                if(!player_2.fight === false){
+                                    endfirst(setWinPlayer1,winPlayer1);             
+                                }
+                                Update();
+                            }else{
+                                player_1.get_mna(20);
+                                setManaPlayer1(player_1.renderMana(2))
+                                soryuken(player_1, setRenderState, setAtackOn1)
+                                Update();
+                            }
+                        }
+                    }
                 break;
                 // SECOND PLAYER COMANDS START HERE
                 case 'j':
@@ -386,26 +452,26 @@ const Fight =({user, setUser})=>{
                 break;
                 // ATTACK
                 case 'y': 
-                if(!atackOn2===true && onAir2===false){
-                    checkposition()
-                    if(checkRange(position1,position2)){
-                        player_1.fight = false;
-                        kick(player_2,setRenderState2, setAtackOn2);
-                        if(guard1===false){
-                            player_1.get_dmg(player_2.strength*2);
-                        }else if(guard1===true){
-                            player_1.get_dmg(1);
+                    if(!atackOn2===true && onAir2===false){
+                        checkposition()
+                        if(checkRange(position1,position2)){
+                            player_1.fight = false;
+                            kick(player_2,setRenderState2, setAtackOn2);
+                            if(guard1===false){
+                                player_1.get_dmg(player_2.strength*2);
+                            }else if(guard1===true){
+                                player_1.get_dmg(1);
+                            }
+                            setLifePlayer1(player_1.renderLife())
+                            if(!player_1.fight === false){
+                                endfirst(setWinPlayer2,winPlayer2);             
+                            }
+                            Update();
+                        }else{
+                            kick(player_2,setRenderState2, setAtackOn2);
+                            Update();
                         }
-                        setLifePlayer1(player_1.renderLife())
-                        if(!player_1.fight === false){
-                            endfirst(setWinPlayer2,winPlayer2);             
-                        }
-                        Update();
-                    }else{
-                        kick(player_2,setRenderState2, setAtackOn2);
-                        Update();
                     }
-                }
                 break;
                 case 'h':
                     if(!atackOn2===true && onAir2===false){
@@ -430,7 +496,32 @@ const Fight =({user, setUser})=>{
                     }
                 break;
                 case 'n': 
-                    console.log("n is power")
+                    if(!atackOn2===true && onAir2===false){
+                        checkposition()
+                        if(!player_2.no_mana === true){
+                            if(checkSecialRange(position1,position2)){
+                                player_1.fight = false;
+                                soryuken(player_2, setRenderState2, setAtackOn2)
+                                player_2.get_mna(20);
+                                setManaPlayer2(player_2.renderMana())
+                                if(guard1===false){
+                                    player_1.get_dmg(player_2.power);
+                                }else if(guard1===true){
+                                    player_1.get_dmg(5);
+                                }
+                                setLifePlayer1(player_1.renderLife())
+                                if(!player_1.fight === false){
+                                    endfirst(setWinPlayer2,winPlayer2);             
+                                }
+                                Update();
+                            }else{
+                                player_2.get_mna(20);
+                                setManaPlayer2(player_2.renderMana())
+                                soryuken(player_2, setRenderState2, setAtackOn2)
+                                Update();
+                            }
+                        }
+                    }
                 break;  
             default: console.log("none");
                 break;

@@ -52,6 +52,11 @@ const Initialpage =({dispatch, user , setUser})=>{
             this.jump3 ='/images/Figheters/'+item.name+'/jump/jump3.png';
             this.jump4 ='/images/Figheters/'+item.name+'/jump/jump4.png';
             this.jump5 ='/images/Figheters/'+item.name+'/jump/jump5.png';
+            this.soryuken1 ='/images/Figheters/'+item.name+'/Fight/soryuken.png';
+            this.soryuken2 ='/images/Figheters/'+item.name+'/Fight/soryuken2.png';
+            this.soryuken3 ='/images/Figheters/'+item.name+'/Fight/soryuken3.png';
+            this.soryuken4 ='/images/Figheters/'+item.name+'/Fight/soryuken4.png';
+            this.soryuken5 ='/images/Figheters/'+item.name+'/Fight/soryuken5.png';
             this.kick1 ='/images/Figheters/'+item.name+'/Fight/kick.png';
             this.kick2 ='/images/Figheters/'+item.name+'/Fight/kick2.png';
             this.kick3 ='/images/Figheters/'+item.name+'/Fight/kick3.png';
@@ -62,6 +67,7 @@ const Initialpage =({dispatch, user , setUser})=>{
             this.health = item.health;
             this.max_mana = item.mana;
             this.mana = item.mana;
+            this.no_mana = false;
             this.strength = item.strength;
             this.power = item.power;
             this.playerfixed = 1;
@@ -93,8 +99,15 @@ const Initialpage =({dispatch, user , setUser})=>{
             this.health -= num;
             if((this.health*this.max_health)/100 <= 0 || (this.max_health-this.health) <= 0 ){ 
                 console.log("endgame");
-                this.health = this.max_health;
                 this.fight = true;
+            };
+        };
+        get_mna(num){
+            this.mana -= num;
+            if((this.mana*this.max_mana)/100 <= 0 || (this.max_mana-this.mana) <= 0 ){ 
+                console.log("no mana");
+                this.mana = 0;
+                this.no_mana = true;
             };
         };
         move_right(){
@@ -129,18 +142,15 @@ const Initialpage =({dispatch, user , setUser})=>{
             let styleish= {};
             if(this.game === true){
                 this.position_x = posit
-                console.log("now is "+this.position_x)
             }
             if(this.flip === true){
-                console.log("fliped")
                 let pos = this.position_x;
                 styleish = {
                     position: "absolute",
                     left: `${pos}vw`, 
                     bottom: `${jump}vh`,
                     transform: "rotateY(180deg)" }
-
-                
+ 
                 if(this.attack === true){
                     console.log("attaked")
                     styleish = {
@@ -149,14 +159,11 @@ const Initialpage =({dispatch, user , setUser})=>{
                         bottom: `${jump}vh`,
                         transform: "rotateY(180deg)" }
                         
-                        return(<div style={styleish} >
-                            <img className="charactersize" src={process} alt=""/>
-                            </div>);
+                    return(<div style={styleish} >
+                        <img className="charactersize" src={process} alt=""/>
+                        </div>);
                 }
-
             }else{
-                console.log("is "+this.position_x)
-
                 styleish = {
                     position: "absolute",
                     left: `${posit}vw`, 
@@ -235,7 +242,7 @@ const Initialpage =({dispatch, user , setUser})=>{
             let energy = this.max_mana - this.mana;
             let percentage = (energy * 100)/this.max_mana;
             let actual_mana = ((100*100)/100) - percentage;
-
+           
             let back = {
                 width: `100%`,
                 height: "4vh",
@@ -262,17 +269,33 @@ const Initialpage =({dispatch, user , setUser})=>{
                 }
             }
             let styleish = {
-                 width: `${actual_mana}%`,
-                 height: "3.5vh",
-                 backgroundColor: "blue",
-                 border: "2px solid",
-                 borderColor: "white",
-                 color: "black",
-                 alignItems: "center",
-                 borderRadius: "15px",
-                 display: "flex",
-                 justifyContent: "center",
-             }
+                width: `${actual_mana}%`,
+                height: "3.5vh",
+                backgroundColor: "blue",
+                border: "2px solid",
+                borderColor: "white",
+                color: "black",
+                alignItems: "center",
+                borderRadius: "15px",
+                display: "flex",
+                justifyContent: "center",
+            }
+            if(num==="full"){
+                this.mana =this.max_mana
+                    styleish = {
+                    width: `${this.max_mana}%`,
+                    height: "3.5vh",
+                    backgroundColor: "blue",
+                    border: "2px solid",
+                    borderColor: "white",
+                    color: "black",
+                    alignItems: "center",
+                    borderRadius: "15px",
+                    display: "flex",
+                    justifyContent: "center"
+                }
+            }
+
              return (<div style={back}>
                     <div style={styleish}>{this.mana}</div>
                     </div>);
