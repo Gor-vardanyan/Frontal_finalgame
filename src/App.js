@@ -7,7 +7,9 @@ import Fighters from './containers/Fighters/Fighters';
 import Profile from './containers/Profile/Profile';
 import Game from './containers/Game/Game';
 import Home from './containers/Home/Home';
+import Admin from './containers/Admin/Admin';
 import Initialpage from './containers/Initialpage/Initialpage';
+
 //import { useDispatch } from 'react-redux';
 
 function App() {
@@ -33,7 +35,12 @@ function App() {
           <Route path='/profile'>
             <Profile user={user} setUser={setUser}></Profile>
           </Route>
-
+          {user?.role === 1
+          ?<Route path='/admin'>
+          <Admin user={user} setUser={setUser}></Admin>
+          </Route>
+          :<Game></Game>}
+          
         </Switch>
         {user?<Footer></Footer>:<div></div>}
       </Route>
