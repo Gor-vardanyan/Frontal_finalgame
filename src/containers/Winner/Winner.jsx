@@ -40,10 +40,10 @@ const Winner=({Declared, user, setUser})=>{
                             <p className="p">Mana: {Declared.mana}</p>
                             <p className="p">Power: {Declared.power}</p>
                             <p className="p">Strength: {Declared.strength}</p>
-                            <p style={{margin: "5px", display: "flex",   alignItems: "center"}} className="p">Credits: {user.credit} +1 <img style={{ width: "20px"}} src="/Images/goldCoin.gif" alt=""/></p>
+                            <p style={{margin: "5px", display: "flex",   alignItems: "center"}} className="p">Credits: {user.credit} +1 <img style={{ width: "20px"}} src="/images/goldCoin.gif" alt=""/></p>
                         </div>
                     <p>Win fights to get more credits</p>
-                <img className="homeimage" src={'/Images/background.jpg'} alt=""/>
+                <img className="homeimage" src={'/images/background.jpg'} alt=""/>
             </div>)
 }
 export default Winner;

@@ -135,7 +135,7 @@ const Fighters =({user,setUser}) =>{
                         </div>
             :<div></div>}
             <div className="nfocontent">
-            <div style={{display: "flex", alignItems: "center"}}><h2>Credits: {creditos}</h2><img style={{ width: "20px"}} src="/Images/goldCoin.gif" alt=""/></div>
+            <div style={{display: "flex", alignItems: "center"}}><h2>Credits: {creditos}</h2><img style={{ width: "20px"}} src="/images/goldCoin.gif" alt=""/></div>
             <div className="sinfocontent">
 
                 {info?<div style={{ height: "57vh", width: "20vw", color: "white" }}>{info}
