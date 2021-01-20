@@ -12,3 +12,9 @@ This proyect is made as my portfolio, to show my experience and knowledge.
 - mongodb
 - mongoose
 - axios
+### Register View
+![](public/register.gif)
+ 
+ - #### fight view 
+![](public/fight.gif)
+ 
