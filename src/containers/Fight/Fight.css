@@ -6,6 +6,30 @@
     height: 75vh;
     width: 100vw;
 }
+.secondNdRound{
+    position: absolute;
+    color: white;
+    right: 44%;
+    top: 26%;
+    font-weight: bold;
+    font-size: x-large; 
+}
+.FirstRound{
+    position: absolute;
+    color: white;
+    right: 44%;
+    top: 26%;
+    font-weight: bold;
+    font-size: x-large; 
+}
+.FinalRound{
+    position: absolute;
+    color: white;
+    right: 44%;
+    top: 26%;
+    font-weight: bold;
+    font-size: x-large;
+}
 .life{
     position: absolute;
     top: 15vh;

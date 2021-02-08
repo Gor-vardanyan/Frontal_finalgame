@@ -68,13 +68,14 @@ const Initialpage =({dispatch, user , setUser})=>{
             this.max_mana = item.mana;
             this.mana = item.mana;
             this.no_mana = false;
+            this.death = '/img.jpg'
             this.strength = item.strength;
             this.power = item.power;
             this.playerfixed = 1;
             this.game = false;
             this.attack =false;
             this.flip = false;
-            this.fight = true;
+            this.lose = 0;
             this.position_x = 15;
             this.position_y = 0;
             this.boundries = {
@@ -99,7 +100,7 @@ const Initialpage =({dispatch, user , setUser})=>{
             this.health -= num;
             if((this.health*this.max_health)/100 <= 0 || (this.max_health-this.health) <= 0 ){ 
                 console.log("endgame");
-                this.fight = true;
+                this.lose = 1;
             };
         };
         get_mna(num){
@@ -138,7 +139,7 @@ const Initialpage =({dispatch, user , setUser})=>{
             }
         };
 
-        render(jump,posit,process){
+        render( jump, posit, process, id, displayState){
             let styleish= {};
             if(this.game === true){
                 this.position_x = posit
@@ -160,8 +161,26 @@ const Initialpage =({dispatch, user , setUser})=>{
                         transform: "rotateY(180deg)" }
                         
                     return(<div style={styleish} >
-                        <img className="charactersize" src={process} alt=""/>
-                        </div>);
+                    <img id={id+"-img"} style={{display: "none"}}className="charactersize" src={this.img} alt=""/>
+                    <img id={id+"-punch"} style={{display: "none"}}className="charactersize" src={this.punch} alt=""/>
+
+                    <img id={id+"-jump1"}  style={{display: "none"}} className="charactersize" src={this.jump1} alt=""/>
+                    <img id={id+"-jump2"}  style={{display: "none"}} className="charactersize" src={this.jump2} alt=""/>
+                    <img id={id+"-jump3"}  style={{display: "none"}} className="charactersize" src={this.jump3} alt=""/>
+                    <img id={id+"-jump4"}  style={{display: "none"}} className="charactersize" src={this.jump4} alt=""/>
+
+                    <img id={id+"-kick1"}  style={{display: "none"}} className="charactersize" src={this.kick1} alt=""/>
+                    <img id={id+"-kick2"}  style={{display: "none"}} className="charactersize" src={this.kick2} alt=""/>
+                    <img id={id+"-kick3"}  style={{display: "none"}} className="charactersize" src={this.kick3} alt=""/>
+                    <img id={id+"-kick4"}  style={{display: "none"}} className="charactersize" src={this.kick4} alt=""/>
+
+                    <img id={id+"-soryuken1"}  style={{display: "none"}} className="charactersize" src={this.soryuken1} alt=""/>
+                    <img id={id+"-soryuken2"}  style={{display: "none"}} className="charactersize" src={this.soryuken2} alt=""/>
+                    <img id={id+"-soryuken3"}  style={{display: "none"}} className="charactersize" src={this.soryuken3} alt=""/>
+                    <img id={id+"-soryuken4"}  style={{display: "none"}} className="charactersize" src={this.soryuken4} alt=""/>
+                    <img id={id+"-soryuken5"}  style={{display: "none"}} className="charactersize" src={this.soryuken5} alt=""/>
+
+                    </div>);
                 }
             }else{
                 styleish = {
@@ -171,8 +190,28 @@ const Initialpage =({dispatch, user , setUser})=>{
                     
             };
             return(<div style={styleish} >
-                <img className="charactersize" src={process} alt=""/>
-                </div>);
+                    <img id={id+"-img"} style={{display: "none"}}className="charactersize" src={this.img} alt=""/>
+                    <img id={id+"-guard"} style={{display: "none"}}className="charactersize" src={this.guard} alt=""/>
+
+                    <img id={id+"-punch"} style={{display: "none"}}className="charactersize" src={this.punch} alt=""/>
+
+                    <img id={id+"-jump1"}  style={{display: "none"}} className="charactersize" src={this.jump1} alt=""/>
+                    <img id={id+"-jump2"}  style={{display: "none"}} className="charactersize" src={this.jump2} alt=""/>
+                    <img id={id+"-jump3"}  style={{display: "none"}} className="charactersize" src={this.jump3} alt=""/>
+                    <img id={id+"-jump4"}  style={{display: "none"}} className="charactersize" src={this.jump4} alt=""/>
+
+                    <img id={id+"-kick1"}  style={{display: "none"}} className="charactersize" src={this.kick1} alt=""/>
+                    <img id={id+"-kick2"}  style={{display: "none"}} className="charactersize" src={this.kick2} alt=""/>
+                    <img id={id+"-kick3"}  style={{display: "none"}} className="charactersize" src={this.kick3} alt=""/>
+                    <img id={id+"-kick4"}  style={{display: "none"}} className="charactersize" src={this.kick4} alt=""/>
+
+                    <img id={id+"-soryuken1"}  style={{display: "none"}} className="charactersize" src={this.soryuken1} alt=""/>
+                    <img id={id+"-soryuken2"}  style={{display: "none"}} className="charactersize" src={this.soryuken2} alt=""/>
+                    <img id={id+"-soryuken3"}  style={{display: "none"}} className="charactersize" src={this.soryuken3} alt=""/>
+                    <img id={id+"-soryuken4"}  style={{display: "none"}} className="charactersize" src={this.soryuken4} alt=""/>
+                    <img id={id+"-soryuken5"}  style={{display: "none"}} className="charactersize" src={this.soryuken5} alt=""/>
+
+                    </div>);
         };
 
         renderLife(num){

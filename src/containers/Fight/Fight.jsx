@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Fight.css'
 import { connect } from 'react-redux';
 import Winner from '../Winner/Winner';
@@ -8,7 +8,7 @@ var player_2= {}
 
 const mapStateToProps = (state)=> {
     player_1 = state.player_1;
-    player_2 = state.player_2
+    player_2 = state.player_2;
 }
 
 
@@ -18,12 +18,15 @@ const useUpdate = () => {
 };
 
 const Fight =({user, setUser})=>{
-    const [renderState,setRenderState]=useState(player_1.render(7.5, player_1.position_x, player_1.img));
-    const [renderState2,setRenderState2]=useState(player_2.render(7.5, player_2.position_x, player_2.img));
+    //RENDER JUGADOR
+    const [renderState,setRenderState]=useState(player_1.render(7.5, player_1.position_x, player_1.img, "player_1" , "none"));
+    const [renderState2,setRenderState2]=useState(player_2.render(7.5, player_2.position_x, player_2.img, "player_2", "none"));
     const [lifePlayer1,setLifePlayer1]=useState(player_1.renderLife());
     const [lifePlayer2,setLifePlayer2]=useState(player_2.renderLife(2));
     const [manaPlayer1,setManaPlayer1]=useState(player_1.renderMana());
     const [manaPlayer2,setManaPlayer2]=useState(player_2.renderMana(2));
+    
+    //ESTADOS JUGADOR
     const [guard1, setGuard1] = useState(false);
     const [guard2, setGuard2] = useState(false);
 
@@ -33,11 +36,25 @@ const Fight =({user, setUser})=>{
     const [atackOn1,setAtackOn1]=useState(false);
     const [atackOn2,setAtackOn2]=useState(false);
     
-    const [winPlayer1, setWinPlayer1] = useState(1);
-    const [winPlayer2, setWinPlayer2] = useState(1);
-    
-    const [Declared, setDeclared] = useState(false)
+    //ESTADOS JUEGO
+    const [winPlayer1, setwinPlayer1] = useState(1);
+    const [winPlayer2, setwinPlayer2] = useState(1);
 
+    const [Declared, setDeclared] = useState(false);
+    
+    const [block1] = useState("player_1-img");
+    const [block2] = useState("player_2-img");
+
+    useEffect(() => {
+        document.getElementById(block1).style.display="block";
+        document.getElementById(block2).style.display="block";
+    }, [block1,block2])
+
+    useEffect(() => {
+        endfirst();             
+    }, [winPlayer1,winPlayer2]);
+
+    //FUNCIONES DE COMBATE
     const checkRange = (pos_player1, pos_player2) =>{
         var calc = ((pos_player1 + pos_player2) - 100);
         return ( calc > -10 && calc < 5)
@@ -58,27 +75,39 @@ const Fight =({user, setUser})=>{
        }
     };
 
-    const jumpR=(item, fun, jump)=>{
+    const jumpR=(item, fun, jump , name)=>{
         jump(true)
-        fun(item.render(7.5,item.position_x,item.jump1));
+        document.getElementById( name+"-img").style.display="none";
+        fun(item.render(7.5,item.position_x,item.jump1, name, "none"));
+        document.getElementById( name+"-jump1").style.display="block";
         Update();
         setTimeout(()=>{
-            fun(item.render(12,item.position_x,item.jump2));
+            document.getElementById( name+"-jump1").style.display="none";
+            fun(item.render(12,item.position_x,item.jump2, name, "none"));
+            document.getElementById( name+"-jump2").style.display="block";
             Update();
             item.move_right()
             setTimeout(()=>{
-                fun(item.render(22,item.position_x,item.jump3));
+                document.getElementById( name+"-jump2").style.display="none";
+                fun(item.render(22,item.position_x,item.jump3, name, "none"));
+                document.getElementById( name+"-jump3").style.display="block";
                 Update();
                 item.move_right()
                 setTimeout(()=>{
-                    fun(item.render(12,item.position_x,item.jump4));
+                    document.getElementById( name+"-jump3").style.display="none";
+                    fun(item.render(12,item.position_x,item.jump4, name, "none"));
+                    document.getElementById( name+"-jump4").style.display="block";
                     Update();
                     item.move_right()
                     setTimeout(()=>{
-                        fun(item.render(7.5,item.position_x,item.jump1));
+                        document.getElementById( name+"-jump4").style.display="none";
+                        fun(item.render(7.5,item.position_x,item.jump1, name, "none"));
+                        document.getElementById( name+"-jump1").style.display="block";
                         Update();
                         setTimeout(()=>{
-                            fun(item.render(7.5, item.position_x, item.img));
+                            document.getElementById( name+"-jump1").style.display="none";
+                            fun(item.render(7.5, item.position_x, item.img, name, "none"));
+                            document.getElementById( name+"-img").style.display="block";
                             Update();
                             jump(false)
                         },150)
@@ -88,27 +117,39 @@ const Fight =({user, setUser})=>{
         },100)
     };
 
-    const jumpL=(item, fun, jump)=>{
+    const jumpL=(item, fun, jump , name)=>{
         jump(true)
-        fun(item.render(7.5,item.position_x,item.jump1));
+        document.getElementById( name+"-img").style.display="none";
+        fun(item.render(7.5,item.position_x,item.jump1, name, "none"));
+        document.getElementById( name+"-jump1").style.display="block";
         Update();
         setTimeout(()=>{
-            fun(item.render(12,item.position_x,item.jump2));
+            document.getElementById( name+"-jump1").style.display="none";
+            fun(item.render(12,item.position_x,item.jump2, name, "none"));
+            document.getElementById( name+"-jump2").style.display="block";
             Update();
             item.move_left()
             setTimeout(()=>{
-                fun(item.render(22,item.position_x,item.jump3));
+                document.getElementById( name+"-jump2").style.display="none";
+                fun(item.render(22,item.position_x,item.jump3, name, "none"));
+                document.getElementById( name+"-jump3").style.display="block";
                 Update();
                 item.move_left()
                 setTimeout(()=>{
-                    fun(item.render(12,item.position_x,item.jump4));
+                    document.getElementById( name+"-jump3").style.display="none";
+                    fun(item.render(12,item.position_x,item.jump4, name, "none"));
+                    document.getElementById( name+"-jump4").style.display="block";
                     Update();
                     item.move_left()
                     setTimeout(()=>{
-                        fun(item.render(7.5,item.position_x,item.jump1));
+                        document.getElementById( name+"-jump4").style.display="none";
+                        fun(item.render(7.5,item.position_x,item.jump1, name, "none"));
+                        document.getElementById( name+"-jump1").style.display="block";
                         Update();
                         setTimeout(()=>{
-                            fun(item.render(7.5, item.position_x, item.img));
+                            document.getElementById( name+"-jump1").style.display="none";
+                            fun(item.render(7.5, item.position_x, item.img, name, "none"));
+                            document.getElementById( name+"-img").style.display="block";
                             Update();
                             jump(false)
                         },150)
@@ -118,34 +159,44 @@ const Fight =({user, setUser})=>{
         },100)
     };
 
-    const guard =(item,fun,fun2)=>{
+    const guard =(item,fun,fun2, name)=>{
         console.log("pressed ",fun2)
-        fun(item.render(7.5,item.position_x,item.guard));
+        document.getElementById( name+"-img").style.display="none";
+        fun(item.render(7.5,item.position_x,item.guard, name));
+        document.getElementById( name+"-guard").style.display="block";
         fun2(true);
     };
 
-    const letguard =(item,fun,fun2)=>{
+    const letguard =(item,fun,fun2, name )=>{
         console.log(fun2)
-        fun(item.render(7.5,item.position_x,item.img));
+        document.getElementById( name+"-guard").style.display="none";
+        fun(item.render(7.5,item.position_x,item.img, name));
+        document.getElementById( name+"-img").style.display="block";
         fun2(false);
     };
 
-    const kick =(item,fun,attack)=>{
+    const kick =( item, fun, attack, name)=>{
         attack(true);
-        fun(item.render(7.5,item.position_x,item.kick1));
+        document.getElementById( name+"-img").style.display="none";
+        fun(item.render( 7.5, item.position_x, item.kick1, name));
+        document.getElementById( name+"-kick1").style.display="block";
         Update();
         setTimeout(()=>{
-            fun(item.render(7.5,item.position_x,item.kick2));
-            Update();
+            document.getElementById( name+"-kick1").style.display="none";
+            fun(item.render( 7.5, item.position_x, item.kick1, name));
+            document.getElementById( name+"-kick2").style.display="block";            Update();
             setTimeout(()=>{
-                fun(item.render(7.5,item.position_x,item.kick3));
-                Update();
+                document.getElementById( name+"-kick2").style.display="none";
+                fun(item.render( 7.5, item.position_x, item.kick1, name));
+                document.getElementById( name+"-kick3").style.display="block";                Update();
                 setTimeout(()=>{
-                    fun(item.render(7.5,item.position_x,item.kick4));
-                    Update();
+                    document.getElementById( name+"-kick3").style.display="none";
+                    fun(item.render( 7.5, item.position_x, item.kick1, name));
+                    document.getElementById( name+"-kick4").style.display="block";                    Update();
                     setTimeout(()=>{
-                        fun(item.render(7.5, item.position_x, item.img));
-                        Update();
+                        document.getElementById( name+"-kick4").style.display="none";
+                        fun(item.render( 7.5, item.position_x, item.kick1, name));
+                        document.getElementById( name+"-img").style.display="block";                        Update();
                         attack(false);
                     },300)
                 },200)
@@ -153,38 +204,48 @@ const Fight =({user, setUser})=>{
         },100)
     };
 
-    const punch =(item,fun,attack)=>{
+    const punch =( item, fun, attack, name)=>{
         attack(true);
         setTimeout(()=>{
             item.attack = true;
-                fun(item.render(7.5,item.position_x, item.punch));
+            document.getElementById( name+"-img").style.display="none";
+                fun(item.render(7.5,item.position_x, item.punch, name));
+                document.getElementById( name+"-punch").style.display="block";
             item.attack = false;
             setTimeout(()=>{
-                fun(item.render(7.5, item.position_x, item.img));
+                document.getElementById( name+"-punch").style.display="none";
+                fun(item.render(7.5, item.position_x, item.img, name));
+                document.getElementById( name+"-img").style.display="block";
                 attack(false);
             },200)
         },200)
     };
 
-    const soryuken=(item, fun, attack, move)=>{
+    const soryuken=(item, fun, attack, name)=>{
         attack(true)
-        fun(item.render(7.5,item.position_x,item.soryuken1));
+        document.getElementById( name+"-img").style.display="none";
+        fun(item.render(7.5,item.position_x,item.soryuken1, name));
+        document.getElementById( name+"-soryuken1").style.display="block";
         Update();
         if(item.flip === true){
             item.move_left()
         }else{
             item.move_right()
         }
-        setTimeout((move)=>{
-            fun(item.render(7.5,item.position_x,item.soryuken2));
+        setTimeout(()=>{
+            document.getElementById( name+"-soryuken1").style.display="none";
+            fun(item.render(7.5,item.position_x,item.soryuken2, name));
+            document.getElementById( name+"-soryuken2").style.display="block";
             Update();
             if(item.flip === true){
                 item.move_left()
             }else{
                 item.move_right()
             }
-            setTimeout((move)=>{
-                fun(item.render(22,item.position_x,item.soryuken3));
+            setTimeout(()=>{
+                document.getElementById( name+"-soryuken2").style.display="none";
+                fun(item.render(22,item.position_x,item.soryuken3, name));
+                document.getElementById( name+"-soryuken3").style.display="block";
                 Update();
                 if(item.flip === true){
                     item.move_left()
@@ -192,13 +253,19 @@ const Fight =({user, setUser})=>{
                     item.move_right()
                 }
             setTimeout(()=>{
-                    fun(item.render(12,item.position_x,item.soryuken4));
+                document.getElementById( name+"-soryuken3").style.display="none";
+                    fun(item.render(12,item.position_x,item.soryuken4, name));
+                    document.getElementById( name+"-soryuken4").style.display="block";
                     Update();
                     setTimeout(()=>{
-                        fun(item.render(7.5,item.position_x,item.soryuken5));
+                        document.getElementById( name+"-soryuken4").style.display="none";
+                        fun(item.render(7.5,item.position_x,item.soryuken5, name));
+                        document.getElementById( name+"-soryuken5").style.display="block";
                         Update();
                         setTimeout(()=>{
-                            fun(item.render(7.5, item.position_x, item.img));
+                            document.getElementById( name+"-soryuken5").style.display="none";
+                            fun(item.render(7.5, item.position_x, item.img, name));
+                            document.getElementById( name+"-img").style.display="block";
                             attack(false)
                         },150)
                     },150)
@@ -207,360 +274,461 @@ const Fight =({user, setUser})=>{
         },100)
     };
 
-    
-    const endfirst=(item,item2)=>{
-        player_1.game = true;
-        player_2.game = true; 
-        player_2.no_mana = false;
-        player_1.no_mana= false;
-        player_2.fight = false;
-        player_1.fight= false;
-        setRenderState(player_1.render(7.5, 15, player_1.img))
-        setRenderState2(player_2.render(7.5, 15, player_2.img))
-        setLifePlayer1(player_1.renderLife("full"))
-        setLifePlayer2(player_2.renderLife("full"))
-
-        setManaPlayer1(player_1.renderMana("full"))
-        setManaPlayer2(player_2.renderMana("full"))
-        checkposition()
-        item(item2+1); // prarameters
-        winner()       
-
-        Update();
-    }
-
-    const winner=()=>{
-        if(winPlayer2 === 2){
-            return setDeclared(player_2)
-        }else if(winPlayer1 === 2){
-            return setDeclared(player_1)
-        }
-    }
-
     const Update = useUpdate();
 
     window.onkeyup=('keyup',(e)=>{
         let position1 = player_1.getPositionPercentage();
         let position2 = player_2.getPositionPercentage();
-
+        
             switch (e.key){
                 case 'a':
-                    if(!atackOn1===true){
-                        console.log("entra")
-                    checkposition() // to see if they are fliped
-                    if(player_1.flip===true){
-                        // cheks the range, if the return is diferent dont colide
-                        if(!checkRange(position1,position2)){
-                            player_1.move_left() // move
+                    if( player_1.lose === player_2.lose ){
+                        if(!guard1 === true){
+                        if(!atackOn1===true){
+                            console.log("entra")
+                        checkposition() // to see if they are fliped
+                        if(player_1.flip===true){
+                            // cheks the range, if the return is diferent dont colide
+                            if(!checkRange(position1,position2)){
+                                player_1.move_left() // move
+                                if(!onAir1===true){
+                                    // if its on the air or atacking we dont render so it doesnt overlap
+                                    setRenderState(player_1.render(7.5, player_1.position_x, player_1.img, "player_1" , "none"));
+                                }                            
+                                Update();
+                            }else{ // else they are in range they dont move
+                                if(!onAir1===true){
+                                    setRenderState(player_1.render(7.5, player_1.position_x, player_1.img, "player_1" , "none" ));
+                                }                            
+                                Update();
+                            };
+                        }else{
+                            player_1.move_left()
                             if(!onAir1===true){
-                                // if its on the air or atacking we dont render so it doesnt overlap
-                                setRenderState(player_1.render(7.5, player_1.position_x, player_1.img));
-                            }                            
+                                setRenderState(player_1.render(7.5, player_1.position_x, player_1.img, "player_1" , "none"));
+                            }
                             Update();
-                        }else{ // else they are in range they dont move
-                            if(!onAir1===true){
-                                setRenderState(player_1.render(7.5, player_1.position_x, player_1.img));
-                            }                            
-                            Update();
-                        };
-                    }else{
-                        player_1.move_left()
-                        if(!onAir1===true){
-                            setRenderState(player_1.render(7.5, player_1.position_x, player_1.img));
                         }
-                        Update();
-                    }
-                    }
-                    
+                        }
+                    }}
                 break;   
                 case 'd':
-                    if(!atackOn1===true){
-                    checkposition()
-                    if(player_1.flip===false){
-                        if(!checkRange(position1,position2)){
+                    if( player_1.lose === player_2.lose ){
+                        if(!guard1 === true){
+                        if(!atackOn1===true){
+                        checkposition()
+                        if(player_1.flip===false){
+                            if(!checkRange(position1,position2)){
+                                player_1.move_right();
+                                if(!onAir1===true){
+                                    setRenderState(player_1.render(7.5, player_1.position_x, player_1.img, "player_1" , "none"));
+                                }
+                                Update();
+                            }else{
+                                if(!onAir1===true){
+                                    setRenderState(player_1.render(7.5, player_1.position_x, player_1.img, "player_1" , "none"));
+                                }
+                                Update();
+                            };
+                        }else{
                             player_1.move_right();
                             if(!onAir1===true){
-                                setRenderState(player_1.render(7.5, player_1.position_x, player_1.img));
+                                setRenderState(player_1.render(7.5, player_1.position_x, player_1.img, "player_1" , "none"));
                             }
                             Update();
-                        }else{
-                            if(!onAir1===true){
-                                setRenderState(player_1.render(7.5, player_1.position_x, player_1.img));
-                            }
-                            Update();
-                        };
-                    }else{
-                        player_1.move_right();
-                        if(!onAir1===true){
-                            setRenderState(player_1.render(7.5, player_1.position_x, player_1.img));
                         }
-                        Update();
-                    }
-                    }               
-
+                        }               
+                    }}
                 break;
                 // JUMP
                 case 'e':
-                    if(!atackOn1===true && onAir1===false){
-                    jumpR(player_1,setRenderState, setOnAir1);
-                    checkposition()
-                    Update();
-                    }
+                    if( player_1.lose === player_2.lose ){
+                        if(!guard1 === true){
+                        if(!atackOn1===true && onAir1===false){
+                        jumpR(player_1,setRenderState, setOnAir1, "player_1");
+                        checkposition()
+                        Update();
+                        }
+                    }}
                 break;
                 case 'q':
-                    if(!atackOn1===true && onAir1===false){
-                    jumpL(player_1,setRenderState, setOnAir1);
-                    checkposition()
-                    Update()
-                    }
+                    if( player_1.lose === player_2.lose ){
+                        if(!guard1 === true){
+                        if(!atackOn1===true && onAir1===false){
+                        jumpL(player_1,setRenderState, setOnAir1, "player_1");
+                        checkposition()
+                        Update()
+                        }
+                    }}
                 break;
                 // GUARD
                 case 's':   
-                    if(!atackOn1===true && onAir1===false){              
-                    letguard(player_1, setRenderState, setGuard1);
-                    checkposition()
-                    Update();
+                    if( player_1.lose === player_2.lose ){
+                        if(!atackOn1===true && onAir1===false){              
+                            letguard(player_1, setRenderState, setGuard1, "player_1" , "none");
+                            checkposition()
+                            Update();
+                        }
                     }
                 break;
                 // ATTACK
                 case 'r': 
-                    if(!atackOn1===true && onAir1===false){
-                    checkposition();
-                        if(checkRange(position1,position2)){
-                        player_2.fight = false;
-                        kick(player_1, setRenderState, setAtackOn1);
-                        if(guard2===false){
-                            player_2.get_dmg(player_1.strength*2);
-                        }else{
-                            player_2.get_dmg(1);
-                        }
-                        setLifePlayer2(player_2.renderLife(2))
-                            if(!player_2.fight === false){
-                                endfirst(setWinPlayer1,winPlayer1);}
-                                Update();
-                        }else{
-                            kick(player_1, setRenderState, setAtackOn1);
-                            Update();
-                        }
-                    }                 
-                break;
-                case 'f':
-                    if(!atackOn1===true && onAir1===false){
-                        checkposition()
-                        if(checkRange(position1,position2)){
+                    if( player_1.lose === player_2.lose ){
+                        if(!guard1 === true){
+                        if(!atackOn1===true && onAir1===false){
+                            checkposition();
+                            if(checkRange(position1,position2)){
                             player_2.fight = false;
-                            punch(player_1, setRenderState, setAtackOn1)
+                            kick(player_1, setRenderState, setAtackOn1, "player_1" , "none");
                             if(guard2===false){
-                                player_2.get_dmg(player_1.strength);
+                                player_2.get_dmg(player_1.strength*2);
                             }else{
                                 player_2.get_dmg(1);
                             }
                             setLifePlayer2(player_2.renderLife(2))
-                            if(!player_2.fight === false){
-                                endfirst(setWinPlayer1,winPlayer1);
-                            }
-                            Update();
-                        }else{
-                            punch(player_1, setRenderState, setAtackOn1)
-                            Update();
-                        }
-                    }
-                break;
-                case 'c': 
-                    if(!atackOn1===true && onAir1===false){
-                        checkposition()
-                        if(!player_1.no_mana === true){
-                            if(checkSecialRange(position1,position2)){
-                                player_2.fight = false;
-                                soryuken(player_1, setRenderState, setAtackOn1)
-                                player_1.get_mna(20);
-                                setManaPlayer1(player_1.renderMana(2))
-                                if(guard2===false){
-                                    player_2.get_dmg(player_1.power);
-                                }else if(guard2===true){
-                                    player_2.get_dmg(5);
-                                }
-                                setLifePlayer2(player_2.renderLife(2))
-                                if(!player_2.fight === false){
-                                    endfirst(setWinPlayer1,winPlayer1);             
+                                if(player_2.lose === 1){
+                                    setTimeout(() => {
+                                        if(winPlayer1 === 1){
+                                            console.log("primera winPlayer1 ="+winPlayer1)
+                                            setwinPlayer1(2)
+                                        }else{
+                                            console.log("segunda winPlayer1 ="+ winPlayer1)
+                                            setwinPlayer1(3)
+                                        } 
+                                    }, 1000);       
                                 }
                                 Update();
                             }else{
-                                player_1.get_mna(20);
-                                setManaPlayer1(player_1.renderMana(2))
-                                soryuken(player_1, setRenderState, setAtackOn1)
+                                kick(player_1, setRenderState, setAtackOn1, "player_1" , "none");
+                                Update();
+                            }
+                        }    
+                    }}   
+                break;
+                case 'f':
+                    if( player_1.lose === player_2.lose ){
+                        if(!guard1 === true){
+                        if(!atackOn1===true && onAir1===false){
+                            checkposition()
+                            if(checkRange(position1,position2)){
+                                player_2.fight = false;
+                                punch(player_1, setRenderState, setAtackOn1, "player_1" , "none")
+                                if(guard2===false){
+                                    player_2.get_dmg(player_1.strength);
+                                }else{
+                                    player_2.get_dmg(1);
+                                }
+                                setLifePlayer2(player_2.renderLife(2))
+                                if(player_2.lose === 1){
+                                    setTimeout(() => {
+                                        if(winPlayer1 === 1){
+                                            console.log("primera winPlayer1 ="+winPlayer1)
+                                            setwinPlayer1(2)
+                                        }else{
+                                            console.log("segunda winPlayer1 ="+ winPlayer1)
+                                            setwinPlayer1(3)
+                                        } 
+                                    }, 1000);    
+                                }
+                                Update();
+                            }else{
+                                punch(player_1, setRenderState, setAtackOn1, "player_1" , "none")
                                 Update();
                             }
                         }
-                    }
+                    }}
+                break;
+                case 'c': 
+                    if( player_1.lose === player_2.lose ){
+                        if(!guard1 === true){
+                        if(!atackOn1===true && onAir1===false){
+                            checkposition()
+                            if(!player_1.no_mana === true){
+                                if(checkSecialRange(position1,position2)){
+                                    player_2.fight = false;
+                                    soryuken(player_1, setRenderState, setAtackOn1, "player_1" , "none")
+                                    player_1.get_mna(20);
+                                    setManaPlayer1(player_1.renderMana(2))
+                                    if(guard2===false){
+                                        player_2.get_dmg(player_1.power);
+                                    }else if(guard2===true){
+                                        player_2.get_dmg(5);
+                                    }
+                                    setLifePlayer2(player_2.renderLife(2))
+                                    if(player_2.lose === 1){
+                                        setTimeout(() => {
+                                            if(winPlayer1 === 1){
+                                                console.log("primera winPlayer1 ="+winPlayer1)
+                                                setwinPlayer1(2)
+                                            }else{
+                                                console.log("segunda winPlayer1 ="+ winPlayer1)
+                                                setwinPlayer1(3)
+                                            } 
+                                        }, 1000);                             
+                                    }
+                                    Update();
+                                }else{
+                                    player_1.get_mna(20);
+                                    setManaPlayer1(player_1.renderMana(2))
+                                    soryuken(player_1, setRenderState, setAtackOn1, "player_1" , "none")
+                                    Update();
+                                }
+                            }
+                        }
+                    }}
                 break;
                 // SECOND PLAYER COMANDS START HERE
                 case 'j':
-                    if(!atackOn2===true){
-                    checkposition()
-                    if(player_2.flip===false){
-                        if(!checkRange(position1,position2)){
+                    if( player_1.lose === player_2.lose ){
+                        if(!guard2 === true){
+                        if(!atackOn2===true){
+                        checkposition()
+                        if(player_2.flip===false){
+                            if(!checkRange(position1,position2)){
+                                player_2.move_right();
+                                if(!onAir2===true){
+                                    setRenderState2(player_2.render(7.5, player_2.position_x, player_2.img, "player_2" , "none"));
+                                }
+                                Update();
+                            }else{
+                                if(!onAir2===true){
+                                setRenderState2(player_2.render(7.5, player_2.position_x, player_2.img, "player_2" , "none"));
+                                Update();
+                                }
+                            };
+                        }else{
                             player_2.move_right();
                             if(!onAir2===true){
-                                setRenderState2(player_2.render(7.5, player_2.position_x, player_2.img));
+                                setRenderState2(player_2.render(7.5, player_2.position_x, player_2.img, "player_2" , "none"));
                             }
                             Update();
-                        }else{
-                            if(!onAir2===true){
-                            setRenderState2(player_2.render(7.5, player_2.position_x, player_2.img));
-                            Update();
-                            }
-                        };
-                    }else{
-                        player_2.move_right();
-                        if(!onAir2===true){
-                            setRenderState2(player_2.render(7.5, player_2.position_x, player_2.img));
-                        }
-                        Update();
+                        }}
                     }}
-
                 break;
                 case 'l':
-                    if(!atackOn2===true){
-                    checkposition()
-                    if(player_2.flip===true){
-                        if(!checkRange(position1,position2)){
+                    if( player_1.lose === player_2.lose ){
+                        if(!guard2 === true){
+                        if(!atackOn2===true){
+                        checkposition()
+                        if(player_2.flip===true){
+                            if(!checkRange(position1,position2)){
+                                player_2.move_left()
+                                if(!onAir2===true){
+                                    setRenderState2(player_2.render(7.5, player_2.position_x, player_2.img, "player_2" , "none"));
+                                }                            
+                                Update();
+                            }else{
+                                if(!onAir2===true){
+                                    setRenderState2(player_2.render(7.5, player_2.position_x, player_2.img, "player_2" , "none"));
+                                }                            
+                                Update();
+                            };
+                        }else{
                             player_2.move_left()
                             if(!onAir2===true){
-                                setRenderState2(player_2.render(7.5, player_2.position_x, player_2.img));
-                            }                            
+                                setRenderState2(player_2.render(7.5, player_2.position_x, player_2.img, "player_2" , "none"));
+                            }
                             Update();
-                        }else{
-                            if(!onAir2===true){
-                                setRenderState2(player_2.render(7.5, player_2.position_x, player_2.img));
-                            }                            
-                            Update();
-                        };
-                    }else{
-                        player_2.move_left()
-                        if(!onAir2===true){
-                            setRenderState2(player_2.render(7.5, player_2.position_x, player_2.img));
-                        }
-                        Update();
+                        }}
                     }}
-                    
                 break;
                 // JUMP
                 case 'o':
-                    if(!atackOn2===true && onAir2===false){
-                    jumpL(player_2,setRenderState2, setOnAir2);
-                    checkposition()
-                    Update();
-                    }
+                    if( player_1.lose === player_2.lose ){
+                        if(!guard2 === true){
+                        if(!atackOn2===true && onAir2===false){
+                        jumpL(player_2,setRenderState2, setOnAir2, "player_2");
+                        checkposition()
+                        Update();
+                        }
+                    }}
                 break;
                 case 'u':
-                    if(!atackOn2===true && onAir2===false){
-                    jumpR(player_2,setRenderState2, setOnAir2);
-                    checkposition()
-                    Update();
-                    }
+                    if( player_1.lose === player_2.lose ){
+                        if(!guard2 === true){
+                        if(!atackOn2===true && onAir2===false){
+                        jumpR(player_2,setRenderState2, setOnAir2, "player_2");
+                        checkposition()
+                        Update();
+                        }
+                    }}
                 break;
                 // GUARD
-                case 'k':            
-                    if(!atackOn2===true && onAir2===false){
-                    letguard(player_2, setRenderState2, setGuard2);
-                    checkposition()
-                    Update();
+                case 'k':   
+                if( player_1.lose === player_2.lose ){
+                        if(!atackOn2===true && onAir2===false){
+                        letguard(player_2, setRenderState2, setGuard2, "player_2" , "none");
+                        checkposition()
+                        Update();
+                        }
                     }
                 break;
                 // ATTACK
                 case 'y': 
-                    if(!atackOn2===true && onAir2===false){
-                        checkposition()
-                        if(checkRange(position1,position2)){
-                            player_1.fight = false;
-                            kick(player_2,setRenderState2, setAtackOn2);
-                            if(guard1===false){
-                                player_1.get_dmg(player_2.strength*2);
-                            }else if(guard1===true){
-                                player_1.get_dmg(1);
-                            }
-                            setLifePlayer1(player_1.renderLife())
-                            if(!player_1.fight === false){
-                                endfirst(setWinPlayer2,winPlayer2);             
-                            }
-                            Update();
-                        }else{
-                            kick(player_2,setRenderState2, setAtackOn2);
-                            Update();
-                        }
-                    }
-                break;
-                case 'h':
-                    if(!atackOn2===true && onAir2===false){
-                        checkposition()
-                        if(checkRange(position1,position2)){
-                            player_1.fight = false;
-                            punch(player_2, setRenderState2, setAtackOn2)
-                            if(guard1===false){
-                                player_1.get_dmg(player_2.strength);
-                            }else if(guard1===true){
-                                player_1.get_dmg(1);
-                            }
-                            setLifePlayer1(player_1.renderLife())
-                            if(!player_1.fight === false){
-                                endfirst(setWinPlayer2,winPlayer2);             
-                            }
-                            Update();
-                        }else{
-                            punch(player_2, setRenderState2, setAtackOn2)
-                            Update();
-                        }
-                    }
-                break;
-                case 'n': 
-                    if(!atackOn2===true && onAir2===false){
-                        checkposition()
-                        if(!player_2.no_mana === true){
-                            if(checkSecialRange(position1,position2)){
+                    if( player_1.lose === player_2.lose ){
+                        if(!guard2 === true){
+                        if(!atackOn2===true && onAir2===false){
+                            checkposition()
+                            if(checkRange(position1,position2)){
                                 player_1.fight = false;
-                                soryuken(player_2, setRenderState2, setAtackOn2)
-                                player_2.get_mna(20);
-                                setManaPlayer2(player_2.renderMana())
+                                kick(player_2,setRenderState2, setAtackOn2, "player_2" , "none");
                                 if(guard1===false){
-                                    player_1.get_dmg(player_2.power);
+                                    player_1.get_dmg(player_2.strength*2);
                                 }else if(guard1===true){
-                                    player_1.get_dmg(5);
+                                    player_1.get_dmg(1);
                                 }
                                 setLifePlayer1(player_1.renderLife())
-                                if(!player_1.fight === false){
-                                    endfirst(setWinPlayer2,winPlayer2);             
+                                if(player_1.lose === 1){
+                                    setTimeout(() => {
+                                        if(winPlayer2 === 1){
+                                            console.log("primera winPlayer2 ="+winPlayer2)
+                                            setwinPlayer2(2)
+                                        }else{
+                                            console.log("segunda winPlayer2 ="+ winPlayer2)
+                                            setwinPlayer2(3)
+                                        } 
+                                    }, 1000);          
                                 }
                                 Update();
                             }else{
-                                player_2.get_mna(20);
-                                setManaPlayer2(player_2.renderMana())
-                                soryuken(player_2, setRenderState2, setAtackOn2)
+                                kick(player_2,setRenderState2, setAtackOn2, "player_2" , "none");
                                 Update();
                             }
                         }
-                    }
+                    }}
+                break;
+                case 'h':
+                    if( player_1.lose === player_2.lose ){
+                        if(!guard2 === true){
+                        if(!atackOn2===true && onAir2===false){
+                            checkposition()
+                            if(checkRange(position1,position2)){
+                                player_1.fight = false;
+                                punch(player_2, setRenderState2, setAtackOn2, "player_2" , "none")
+                                if(guard1===false){
+                                    player_1.get_dmg(player_2.strength);
+                                }else if(guard1===true){
+                                    player_1.get_dmg(1);
+                                }
+                                setLifePlayer1(player_1.renderLife())
+                                if(player_1.lose === 1){
+                                    setTimeout(() => {
+                                        if(winPlayer2 === 1){
+                                            console.log("primera winPlayer2 ="+winPlayer2)
+                                            setwinPlayer2(2)
+                                        }else{
+                                            console.log("segunda winPlayer2 ="+ winPlayer2)
+                                            setwinPlayer2(3)
+                                        } 
+                                    }, 1000);        
+                                }
+                                Update();
+                            }else{
+                                punch(player_2, setRenderState2, setAtackOn2, "player_2" , "none")
+                                Update();
+                            }
+                        }
+                    }}
+                break;
+                case 'n': 
+                    if( player_1.lose === player_2.lose ){
+                        if(!guard2 === true){
+                        if(!atackOn2===true && onAir2===false){
+                            checkposition()
+                            if(!player_2.no_mana === true){
+                                if(checkSecialRange(position1,position2)){
+                                    player_1.fight = false;
+                                    soryuken(player_2, setRenderState2, setAtackOn2, "player_2" , "none")
+                                    player_2.get_mna(20);
+                                    setManaPlayer2(player_2.renderMana())
+                                    if(guard1===false){
+                                        player_1.get_dmg(player_2.power);
+                                    }else if(guard1===true){
+                                        player_1.get_dmg(5);
+                                    }
+                                    setLifePlayer1(player_1.renderLife())
+                                    if(player_1.lose === 1){
+                                        setTimeout(() => {
+                                            if(winPlayer2 === 1){
+                                                console.log("primera winPlayer2 ="+winPlayer2)
+                                                setwinPlayer2(2)
+                                            }else{
+                                                console.log("segunda winPlayer2 ="+ winPlayer2)
+                                                setwinPlayer2(3)
+                                            } 
+                                        }, 2000);
+                                    }
+                                    Update();
+                                }else{
+                                    player_2.get_mna(20);
+                                    setManaPlayer2(player_2.renderMana())
+                                    soryuken(player_2, setRenderState2, setAtackOn2, "player_2" , "none")
+                                    Update();
+                                }
+                            }
+                        }
+                    }}
                 break;  
-            default: console.log("none");
+            default: 
                 break;
         }});
 
         window.onkeydown =('keydown',(e)=>{
             switch (e.key){
             case 's':
-                guard(player_1, setRenderState, setGuard1);
-                checkposition()
-                Update();
+                    if( player_1.lose === player_2.lose ){        
+                        guard(player_1, setRenderState, setGuard1, "player_1" , "none");
+                        checkposition()
+                        Update();
+                    }
                 break;
             case 'k':
-                guard(player_2, setRenderState2, setGuard2);
-                checkposition()
-                Update();
+                    if( player_1.lose === player_2.lose ){
+                        guard(player_2, setRenderState2, setGuard2, "player_2" , "none");
+                        checkposition()
+                        Update();
+                    }
                 break; 
-                default:console.log("none")
+            default:
+                break;
             }});
-        
-    const RenderGame=()=>{
+     
+    const winner=()=>{
+        if(winPlayer1 === 3){
+            player_2.lose = 1;
+            return setDeclared(player_1);
+        }else if(winPlayer2 === 3){
+            player_1.lose = 1;
+            return setDeclared(player_2);
+        }else{
+            player_2.lose = 0;
+            player_1.lose= 0;
+        }
+    }
+
+    const endfirst=()=>{
+        player_1.game = true;
+        player_2.game = true; 
+        player_2.no_mana = false;
+        player_1.no_mana= false;
+        player_2.lose = 0;
+        player_1.lose= 0;
+        setRenderState(player_1.render(7.5, 15, player_1.img, "player_1", "none" ));
+        setRenderState2(player_2.render(7.5, 15, player_2.img, "player_2", "none"));
+        setLifePlayer1(player_1.renderLife("full"));
+        setLifePlayer2(player_2.renderLife("full"));
+
+        setManaPlayer1(player_1.renderMana("full"));
+        setManaPlayer2(player_2.renderMana("full"));
+        checkposition()
+         // prarameters
+        console.log("player 1 "+winPlayer1);
+        console.log("player 2 "+winPlayer2);
+        winner()       
+
+        Update();
+    }
+            
         return(<div>
                     {Declared
                         ?<Winner user={user} setUser={setUser} Declared={Declared}></Winner>
@@ -580,7 +748,7 @@ const Fight =({user, setUser})=>{
                             :<div></div>
                             } 
                                 <img className="vs" src="/images/vs.png" alt=""/>
-                                {player_2
+                            {player_2
                             ?<div className="cont">
                                 <div className="lifespawn">
                                     {lifePlayer2}
@@ -593,7 +761,20 @@ const Fight =({user, setUser})=>{
                             :<div></div>
                             } 
                             </div>
+
+
                             <div className="stadium">
+                                  
+                                   {winPlayer2 === 2 && winPlayer1 ===2 
+                                   ?<div className="FinalRound">Final Round</div>
+                                   :<>
+                                       {winPlayer2 !== winPlayer1
+                                        ?<div className="secondNdRound">2nd Round</div>
+                                        :<div className="FirstRound" >1st Round</div>
+                                        } 
+                                   </>
+                                   }
+                                    
                                 {player_1
                                     ?<div className="noflip">{renderState}</div>
                                     :<div></div>
@@ -610,8 +791,7 @@ const Fight =({user, setUser})=>{
                     }
         
                 </div>)
-    }
-    return RenderGame()
 }
+
 
 export default connect(mapStateToProps)(Fight);
